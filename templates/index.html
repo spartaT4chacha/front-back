@@ -36,36 +36,14 @@
 
 <script>
 
+
     // 선택 횟수 배열
     let arr1 = new Array();
     let arr2 = new Array();
     //로그인 상태 확인하기 위한 전역변수 설정.
     let isLogin = false;
-
-    //로그인 상태를 확인하기 위한 함수.
-    async function signStatus() {
-        isLogin = await sign_checkSign();
-        if (isLogin) signin_mode();
-        else signout_mode();
-    }
-
-    function signin_mode() {
-        isLogin = true;
-        $('#signupPage').hide();
-        $('#signinPage').hide();
-        $('#signinoutBtn').text('로그아웃');
-    }
-
-    function signout_mode() {
-        isLogin = false;
-        $('#signupPage').show();
-        $('#signinPage').show();
-        $('#signinoutBtn').text('로그인');
-        sign_signout();
-    }
-
     //페이지가 그려지면 실행되어야 할 함수.
-    $(document).ready(function () {
+    $(document).ready(async function () {
         //풀페이지..js
         $('#fullpage').fullpage({
             //options here
@@ -74,25 +52,53 @@
             scrollHorizontally: true
         });
 
-        //로그인 상태 확인하기
-        signStatus();
-
-        if (isLogin) {
-            let loginText = `로그아웃`;
-            // console.log("이거 실행?")
-        } else {
-            loginText = `로그인`;
-            console.log("아니 이거 실행!")
-        }
-        $("#loginText").text(loginText);
-
-
         //페이지 시작할 때마다 초기화 해주므로 유저가 전역변수 겹칠 일 없음.
         for (let i = 0; i < 8; i++) {
             arr1[i] = 0;
             arr2[i] = 0;
         }
+
+        await signStatus();
+        if (isLogin) {
+            html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/" onclick="signinout()">로그아웃</a>`
+            $('#umm').append(html)
+        } else {
+            html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/login" ">로그인</a>`
+            $('#umm').append(html)
+        }
     });
+
+    async function signStatus() {
+        isLogin = await sign_checkSign();
+        if (isLogin) signin_mode();
+        else signout_mode();
+    }
+
+    function signin_mode() {
+        isLogin = true;
+    }
+
+    function signout_mode() {
+        isLogin = false;
+        sign_signout();
+    }
+
+    async function signinout() {
+        if (isLogin) {
+            signout_mode();
+        } else {
+            let id = $('#signin_id').val();
+            let pass = $('#signin_pass').val();
+
+            let result = await sign_signin(id, pass)
+            if (result) {
+                if (result['success']) {
+                    alert(result['success']);
+                    window.location.replace('/');
+                } else if (result['fail']) alert(result['fail'])
+            } else alert('서버연결실패')
+        }
+    }
 
 
     //local storage로 데이터를 전송
@@ -117,22 +123,29 @@
     async function get_ct_list() {
         let type = ['백차', '녹차', '홍차', '황차', '청차', '흑차', '기타'];
         let effect = ['다이어트', '피로회복', '면역증진', '피부미용', '질병예방', '정신건강', '혈액순환', '소화기능'];
+        let arr = new Array;
         result1 = new Array;
         result2 = new Array;
         for (let i = 0; i < 8; i++) {
             if (arr1[i] % 2 != 0) {
                 result1.push(type[i]);
+                arr.push(type[i]);
             }
             if (arr2[i] % 2 != 0) {
                 result2.push(effect[i]);
+                arr.push(effect[i]);
             }
         }
         var caffeine = $(':radio[name="caffien"]:checked').val();
         console.log(result1, result2, caffeine);
+        arr.push(caffeine);
+        caff = new Array;
         if (caffeine === "카페인") {
+            caff.push("카페인")
             caffeine = [true]
         } else {
-            caffeine = [true]
+            caff.push("디카페인")
+            caffeine = [false]
         }
         //서버에 전송하기
         $.ajax({
@@ -149,9 +162,11 @@
 
                 // $('#box').empty()
                 let Tea = JSON.parse(response['find_teas'])   /*서버에서 string으로 들어와서 JSON.parse 사용*/
-                console.log(Tea)
+                // console.log(Tea)
 
                 localStorage.setItem("findlist", JSON.stringify(Tea));
+                localStorage.setItem("check_list", JSON.stringify(arr));
+
                 location.href = "/tea_list";
             }
         })
@@ -211,8 +226,8 @@
                     <a class="navi" href="./info"><span class="material-icons md-36"
                                                         style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
                 </li>
-                <li style="float:right">
-                    <a class="navi nav_login" id="loginText" style="margin-right: 40px;" href="./login"></a>
+                <li id="umm" style="float:right">
+
                 </li>
             </ul>
         </header>

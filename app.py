@@ -43,7 +43,6 @@ from pymongo import MongoClient, ReturnDocument
 # client = MongoClient('localhost', 27017)
 client = MongoClient('mongodb://test:test@52.78.104.136', 27017)
 
-
 db = client.dbchacha
 
 
@@ -56,21 +55,21 @@ db = client.dbchacha
 def save_tea():
     print(request.is_json)
     tea_receive = request.get_json()
-    name_receive = tea_receive['name_give']                     # 차 이름입니다
+    name_receive = tea_receive['name_give']  # 차 이름입니다
     # eng_name_receive = tea_receive['eng_name_give']             # (영문)차 이름입니다 - 사용 않아서 주석처리
-    type_receive = tea_receive['type_give']                     # 대분류1 종류
-    eng_type_receive = tea_receive['eng_type_give']             # 대분류1 (영문)종류 - 종류 선택시 자동 입력
-    benefit_receive = tea_receive['benefit_give']               # 대분류2 효능
-    caffeineOX_receive = tea_receive['caffeineOX_give']         # 대분류3 카페인 "함유여부" Boolean 없으면 False 있으면 True
-    caffeine_receive = tea_receive['caffeine_give']             # 상세1 카페인 "함량"
-    benefitdetail_receive = tea_receive['benefitdetail_give']   # 상세2 상세효능
-    desc_receive = tea_receive['desc_give']                     # 상세2 상세설명
-    caution_receive = tea_receive['caution_give']               # 상세3 주의사항
-    img_receive = tea_receive['img_give']                       # 상세4 이미지 주소
+    type_receive = tea_receive['type_give']  # 대분류1 종류
+    eng_type_receive = tea_receive['eng_type_give']  # 대분류1 (영문)종류 - 종류 선택시 자동 입력
+    benefit_receive = tea_receive['benefit_give']  # 대분류2 효능
+    caffeineOX_receive = tea_receive['caffeineOX_give']  # 대분류3 카페인 "함유여부" Boolean 없으면 False 있으면 True
+    caffeine_receive = tea_receive['caffeine_give']  # 상세1 카페인 "함량"
+    benefitdetail_receive = tea_receive['benefitdetail_give']  # 상세2 상세효능
+    desc_receive = tea_receive['desc_give']  # 상세2 상세설명
+    caution_receive = tea_receive['caution_give']  # 상세3 주의사항
+    img_receive = tea_receive['img_give']  # 상세4 이미지 주소
 
     doc = {
         'name': name_receive,
-         # 'eng_name': eng_name_receive,
+        # 'eng_name': eng_name_receive,
         'type': type_receive,
         'eng_type': eng_type_receive,
         'benefit': benefit_receive,
@@ -91,44 +90,45 @@ def save_tea():
 def home():
     return render_template('index.html')
 
+
 @app.route('/contact')
 def contact_page():
     return render_template('contact.html')
+
 
 @app.route('/index')
 def index_page():
     return render_template('index.html')
 
+
 @app.route('/info')
 def info_page():
     return render_template('info.html')
+
 
 @app.route('/info_edit')
 def info_edit_page():
     return render_template('info_edit.html')
 
+
 @app.route('/login')
 def login_page():
     return render_template('login.html')
 
+
 @app.route('/manager')
 def manager_page():
     return render_template('manager.html')
+
 
 @app.route('/tea_list')
 def tea_list_page():
     return render_template('tea_list.html')
 
 
-
-
 @app.route('/save_tea')
 def saveTea():
     return render_template('save_tea.html')
-
-
-
-
 
 
 # ***************************************************************************************************
@@ -149,6 +149,12 @@ def read_mongo():
     type_receive = selector_receive['type_give']
     benefit_receive = selector_receive['benefit_give']
     caffeineOX_receive = selector_receive['caffeineOX_give']
+    if(caffeineOX_receive[0] == True):
+        caff = ['카페인']
+    else:
+        caff = ['디카페인']
+    # print(caffeineOX_receive)
+    check_list = type_receive + benefit_receive + caff
 
     # df_type : 전체 데이터프레임(df_all)에서 type이 '같은' 항목들만 받아서 새로 데이터프레임을 만든다.
     df_type = df_all.loc[df_all['type'].isin(type_receive)]
@@ -175,16 +181,16 @@ def read_mongo():
 
     # 다 걸러진 결과값을 JSON 형식으로 바꿔준다. (JSON 형식을 갖는 string으로 저장됨! 클라이언트에서 parsing)
     find_list = df_caffeine.to_json(orient='records', force_ascii=False)
-
     return jsonify({'find_teas': find_list})
+
+
 
 @app.route('/recommend')  # 검색창 부분 건드리지 않으려고 우선 따로 만들어봄, 병합시 삭제 또는 수정
 def recommend_page():
     return render_template('recommend_tea.html')
 
+
 # ***************************************************************************************************
-
-
 
 
 # ***************************************************************************************************
@@ -193,8 +199,9 @@ def recommend_page():
 @app.route('/tea/list', methods=['GET'])
 def getTea():
     tea_List = list(db.tealist.find({}, {'_id': False}))
-    random.shuffle(tea_List)  # 랜덤 정렬 good good
-    return jsonify({'all_teas':tea_List})
+    random.shuffle(tea_List)  # 랜덤 정렬
+    return jsonify({'all_teas': tea_List})
+
 
 # 검색 기능 -- 영은
 @app.route('/tea/search', methods=['POST'])
@@ -230,7 +237,6 @@ def like_all():
     current_like = target_tea['like']
     check_scrap_id = db.users.find_one({'user_id': current_user})['scrap_id']
 
-
     if check_scrap_id is not None:
         return jsonify({'alreadyScrap': '이미 찜 하셨습니다.'})
     else:
@@ -241,6 +247,7 @@ def like_all():
         id_list.append(scrap_id)
         db.users.update_one({'id': current_user}, {'$set': {'scrap_id': id_list}}, True)
         return jsonify({'successScrap': '좋아요, 찜 완료.'})
+
 
 # ***************************************************************************************************
 
@@ -297,7 +304,7 @@ def checkNickname():
 
     nickname_receive = request.get_json().upper()
 
-    result = db.users.find_one({'id': nickname_receive})
+    result = db.users.find_one({'nickname': nickname_receive})
 
     if result is not None:
         return jsonify({'fail': '사용할 수 없는 별명입니다.'})
@@ -364,11 +371,11 @@ def api_signin():
             response = jsonify({'success': '환영합니다.' + user['nickname'] + '님'})
 
             access_token = create_access_token(identity=user['id'])
-            #response.set_cookie('chachaAccessToken', value=access_token, samesite=None, httponly=True)
-            set_access_cookies(response,access_token)
+            # response.set_cookie('chachaAccessToken', value=access_token, samesite=None, httponly=True)
+            set_access_cookies(response, access_token)
             refresh_token = create_refresh_token(identity=user['id'])
-            #response.set_cookie('chachaRefreshToken', value=refresh_token, samesite=None, httponly=True)
-            set_refresh_cookies(response,refresh_token)
+            # response.set_cookie('chachaRefreshToken', value=refresh_token, samesite=None, httponly=True)
+            set_refresh_cookies(response, refresh_token)
 
             return response
     else:
@@ -416,10 +423,14 @@ def api_get_refresh_token():
 @jwt_required(refresh=True)
 def refresh():
     print('refresh start')
-
+    response = make_response()
     current_user = get_jwt_identity()
     access_token = create_access_token(identity=current_user)
-    return jsonify(access_token=access_token, current_user=current_user)
+    set_access_cookies(response, access_token)
+    refresh_token = create_refresh_token(identity=current_user)
+    set_refresh_cookies(response, refresh_token)
+
+    return response
 
 
 # sign information 유저정보변경
@@ -486,7 +497,7 @@ def sign_page():
 
 # ***************************************************************************************************
 if __name__ == '__main__':
-    app.run('0.0.0.0',port=5001,debug=True)
+    app.run('0.0.0.0', port=5001, debug=True)
 
 # 안 쓰는데 혹시나 해서 남겨둔 예전 like & scrap *********************************************************
 

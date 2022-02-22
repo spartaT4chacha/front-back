@@ -35,7 +35,7 @@ async function sign_signup(id,password,nickname) {
             'nickname_give': nickname
         })
     }).then(result=>{
-        //console.log(result);
+        console.log(result);
         if(result.ok) return result.json();
         else return null;
     });
@@ -50,9 +50,9 @@ async function sign_signin(id,password) {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 'id_give': id,
-                'pass_give': password,                
+                'pass_give': password,
             })
         }).then(result=>{
             if(result.ok) return result.json();
@@ -73,11 +73,11 @@ function unset_token() {
 }
 
 async function get_access_token() {
-    let result = await fetch('get_access_token');    
+    let result = await fetch('get_access_token');
     let token = '';
 
     if(result.ok) token = await result.json();
-    
+
     return token;
 }
 
@@ -86,13 +86,13 @@ async function get_refresh_token() {
     let token = '';
 
     if(result.ok) token = await result.json();
-    //console.log(token);
+    console.log(token);
     return token;
 }
 
 function refreshing() {
-    //console.log("리프레싱 시작")
-    fetch("/refresh");    
+    console.log("리프레싱 시작")
+    fetch("/refresh");
 }
 
 function get_payload(token) {
@@ -103,7 +103,7 @@ function get_payload(token) {
     if(token){
         let base64Payload = token.split('.')[1]; //value 0 -> header, 1 -> payload, 2 -> VERIFY SIGNATURE
         payload = atob(base64Payload);
-        
+
         //console.log(payload);
     }
     return payload;
@@ -120,20 +120,22 @@ function get_payload_exp(token) {
 async function sign_checkSign() {
     let isSign = false;
     let date = new Date();
-    let numberic_date = parseInt(date/1000)           
-    
-    let access_token = await get_access_token();            
+    let numberic_date = parseInt(date/1000);
+    //console.log('now date:'+numberic_date);
 
+    let access_token = await get_access_token();
+    //console.log('access token:'+access_token);
     if(access_token) {
-        let access_payload_exp = get_payload_exp(access_token);            
+        let access_payload_exp = get_payload_exp(access_token);
+        //console.log("access exp:"+access_payload_exp)
 
         if(access_payload_exp > numberic_date) {
             isSign = true;
         } else {
 
             let refresh_token = await get_refresh_token();
-            let refresh_payload_exp = get_payload_exp(refresh_token);            
-
+            let refresh_payload_exp = get_payload_exp(refresh_token);
+            console.log("refresh exp:"+refresh_payload_exp)
             if(refresh_payload_exp > numberic_date) {
                 refreshing();
                 isSign = true;

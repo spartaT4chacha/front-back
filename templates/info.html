@@ -23,9 +23,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- slick -->
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <!--login js import -->
     <script src="../static/js/sign.js"></script>
 </head>
@@ -33,51 +32,72 @@
 
 <script>
 
-    let isLogin = false;
-    isLogin = await sign_checkSign();
-    $(document).ready(function () {
-        signStatus();
+
+    $(document).ready(async function () {
+        $('.post-wrapper').slick({
+            // 한번에 보여지는 카드 수
+            slidesToShow: 4,
+            // 한번에 넘길 카드 수
+            slidesToScroll: 1,
+            // 자동 재생
+            autoplay: true,
+            // 자동 넘기는 속도
+            autoplaySpeed: 2000,
+            // 버튼 안보이게
+            nextArrow: $('.next'),
+            prevArrow: $('.prev'),
+        });
+
+
+        await signStatus();
         if (isLogin) {
-            let nickname = async function sign_getNickname() {
-                // 서버에 없어용
-                let nickname = await fetch('/sign/getNickname')
-                    .then(result => result.json())
-                    .then(result => result['nickname'])
-                return nickname
-            }
-
-            $('.insert_text').append(nickname);
-            // 로그인 아이디 물어보기!!!
-
+        //    로그인 된 사용자는 내정보페이지에 접근할때 별다른 이벤트가 필요 없음
         } else {
-            // 로그인 페이지로 이동하기!!
-            location.href = "./login";
-
+            window.alert("로그인이 필요한 기능입니다.")
+            window.location.replace("/")
         }
 
     });
 
+    async function signStatus() {
+        isLogin = await sign_checkSign();
+        if (isLogin) signin_mode();
+        else signout_mode();
+    }
 
-    $('.post-wrapper').slick({
-        // 한번에 보여지는 카드 수
-        slidesToShow: 4,
-        // 한번에 넘길 카드 수
-        slidesToScroll: 1,
-        // 자동 재생
-        autoplay: true,
-        // 자동 넘기는 속도
-        autoplaySpeed: 2000,
-        // 버튼 안보이게
-        nextArrow: $('.next'),
-        prevArrow: $('.prev'),
-    });
+    function signin_mode() {
+        isLogin = true;
+    }
+
+    function signout_mode() {
+        isLogin = false;
+        sign_signout();
+    }
+
+    async function signinout() {
+        if (isLogin) {
+            signout_mode();
+        } else {
+            let id = $('#signin_id').val();
+            let pass = $('#signin_pass').val();
+
+            let result = await sign_signin(id, pass)
+            if (result) {
+                if (result['success']) {
+                    alert(result['success']);
+                    window.location.replace('/');
+                } else if (result['fail']) alert(result['fail'])
+            } else alert('서버연결실패')
+        }
+    }
+
 </script>
 
 <body>
 <!-- 왼쪽 -->
 <div class="left_side">
     <div class="left_top">
-        <a href="./index.html">차茶</a>
+        <a href="./index">차茶</a>
     </div>
     <div class="left_middle">
         <div class="big_Title">
@@ -96,7 +116,7 @@
                 <a href="#"><span class="material-icons md-36">&#xE87C;</span></a>
             </li>
             <li class="right_nav-item2">
-                <a href="./login.html">로그아웃</a>
+                <a href="/" onclick="signinout()">로그아웃</a>
             </li>
         </ul>
     </div>
@@ -125,7 +145,7 @@
                         <p class="insert_input" id="userEmail" style="color: #777; font-weight: lighter;">user email</p>
                     </div>
                 </div>
-                <a href="info_edit.html">
+                <a href="/info_edit">
                     <button class="btn"><span style="font-size: 18px;">회원정보 수정</span></button>
                 </a>
 
@@ -134,7 +154,7 @@
                         <span>| </span>
                         <span style="font-size: 30px; font-weight: bold;">zzim</span> <span
                             style="font-size: 23px;">💘</span>
-                        <a href="./tea_list.html" class="zzim-button"><span style="font-size: 15px;">더보기</span></a>
+                        <a href="/tea_list" class="zzim-button"><span style="font-size: 15px;">더보기</span></a>
                     </div>
                     <hr width="1017" color="#C53709;" size="2px">
                     <div style="position:relative;">

@@ -27,7 +27,6 @@
 
 
     <script>
-<!--        다큐먼트 레디에서 실행을하면, singstatus있고  is login이 있는데 sign이 돌아가는 동안 병렬이라 islogin이 갱신이 안된다.-->
         $(function () {
             $("a").click(function () {
                 $(".modal").fadeIn();
@@ -41,19 +40,31 @@
 
         //  signin&out
         let isLogin = false;
-
-
-        (document).ready(async function () {
+        $(document).ready(async function () {
             await signStatus();
             if (isLogin) {
                 // 홈화면으로 이동하기!!!!!!!!
-                var loginText = "로그아웃";
-
+                login_Text = "로그아웃";
             } else {
-                loginText = "로그인";
+                login_Text = "로그인";
             }
-            $("#loginText").text(loginText);
+            $("#loginText").text(login_Text);
         });
+
+        function signin_mode() {
+            isLogin = true;
+            $('#signupPage').hide();
+            $('#signinPage').hide();
+            $('#signinoutBtn').text('로그아웃');
+        }
+
+        function signout_mode() {
+            isLogin = false;
+            $('#signupPage').show();
+            $('#signinPage').show();
+            $('#signinoutBtn').text('로그인');
+            sign_signout();
+        }
 
         //  Check ID
 
@@ -177,20 +188,6 @@
             }
         }
 
-        function signin_mode() {
-            isLogin = true;
-            $('#signupPage').hide();
-            $('#signinPage').hide();
-            $('#signinoutBtn').text('로그아웃');
-        }
-
-        function signout_mode() {
-            isLogin = false;
-            $('#signupPage').show();
-            $('#signinPage').show();
-            $('#signinoutBtn').text('로그인');
-            sign_signout();
-        }
 
         //  비밀번호변경
         let isPassiblePassword = false;
@@ -226,7 +223,6 @@
             } else {
                 alert('새로운 비밀번호를 확인해 주세요.')
             }
-
         }
 
         //  회원탈퇴
@@ -280,7 +276,7 @@
             <input type="password" id="signin_pass" placeholder="Password">
             <span class="input-icon"><i class="fa fa-lock"></i></span>
         </div>
-        <button class="login-btn" onclick="signinout()">Login</button>
+        <button type="button" class="login-btn" onclick="signinout()">Login</button>
         <a class="reset-psw" href="#">회원가입</a>
         <div class="seperator"><b>or</b></div>
         <p class="login_inform">Sign in with your social media account</p>

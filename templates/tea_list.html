@@ -26,9 +26,36 @@
 
     <!-- 모달 js -->
     <script>
-        let isLogin = false;
 
-        //로그인 상태를 확인하기 위한 함수.
+        //페이지가 그려지면 실행되어야 할 함수.
+        $(document).ready(async function () {
+
+            //해시태그 뿌려주기
+            checkList = JSON.parse(localStorage.getItem("check_list"));
+            for (let i = 0; i < checkList.length; i++) {
+                let name = checkList[i];
+                let temp = `<div className="mytaste_tag">${name}</div>`
+                $('.mytaste_hashtag').append(temp);
+            }
+
+            await signStatus();
+            if (isLogin) {
+                html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/tea_list" onclick="signinout()">로그아웃</a>`
+                $('#umm').append(html)
+                // temp = `<a class="navi" href="./info"><span class="material-icons md-36" style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>`
+            } else {
+                html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/login" ">로그인</a>`
+                $('#umm').append(html)
+                // temp = `<a class="navi" href="./info"><span class="material-icons md-36" style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>`
+
+            }
+
+
+            //추천 티 리스트 뿌려주는 함수 실행하기
+            showTea()
+        });
+
+
         async function signStatus() {
             isLogin = await sign_checkSign();
             if (isLogin) signin_mode();
@@ -37,44 +64,39 @@
 
         function signin_mode() {
             isLogin = true;
-            $('#signupPage').hide();
-            $('#signinPage').hide();
-            $('#signinoutBtn').text('로그아웃');
         }
 
         function signout_mode() {
             isLogin = false;
-            $('#signupPage').show();
-            $('#signinPage').show();
-            $('#signinoutBtn').text('로그인');
             sign_signout();
         }
 
-        //페이지가 그려지면 실행되어야 할 함수.
-        $(document).ready(function () {
-            //로그인 상태 확인하기
-            signStatus();
+        async function signinout() {
             if (isLogin) {
-                let loginText = `로그아웃`;
-                // console.log("이거 실행?")
+                signout_mode();
             } else {
-                loginText = `로그인`;
-                // console.log("아니 이거 실행!")
+                let id = $('#signin_id').val();
+                let pass = $('#signin_pass').val();
+
+                let result = await sign_signin(id, pass)
+                if (result) {
+                    if (result['success']) {
+                        alert(result['success']);
+                        window.location.replace('/');
+                    } else if (result['fail']) alert(result['fail'])
+                } else alert('서버연결실패')
             }
-            $("#loginText").text(loginText);
-            //추천 티 리스트 뿌려주는 함수 실행하기
-            showTea()
-
-
-        });
+        }
 
         //티 localstorage에 저장되어있는 값들을 불러와서 뿌려주는 js
         function showTea() {
-
             receiveTea = JSON.parse(localStorage.getItem("findlist"));
             // console.log(receiveTea)
+            let cnt = receiveTea.length;
+            let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
+            $('.mytaste_count').append(tmp);
 
-            for (let i = 0; i < receiveTea.length; i++) {
+            for (let i = 0; i < cnt; i++) {
                 let name = receiveTea[i]['name']
                 let type = receiveTea[i]['type']
                 let benefit = receiveTea[i]['benefit']
@@ -84,13 +106,14 @@
                 let desc = receiveTea[i]['desc']
                 let caution = receiveTea[i]['caution']
                 let img = receiveTea[i]['img']
-                let like = receiveTea[i]['like']           /* 좋아요/찜 기능 통합에 따라 like 변수 생존여부 결정 */
+                let like = receiveTea[i]['like']
+                let eng_type = receiveTea[i]['eng_type']/* 좋아요/찜 기능 통합에 따라 like 변수 생존여부 결정 */
 
                 let temp_html = `<div class="tea-box">
-                                    <img class="tea-image" width="261px" height="365.28px"
+                                    <img id = 'tea_src' class="${i}" width="261px" height="365.28px"
                                          src="${img}">
                                     <P style="color:#C53709;font-size:17px;">${name}</P>
-                                    <P style="font-size: 10px;">BLACK TEA</P>
+                                    <P style="font-size: 10px;">${eng_type}</P>
                                 </div>`
                 $('.chosen_tea_list').append(temp_html);
             }
@@ -99,9 +122,85 @@
 
         // 모달 js
         $(function () {
-            $("img").click(function () {
+            $("img").click(function (element) {
+                let src = element.target.getAttribute('class');
+                // console.log(src)
+                receiveTea = JSON.parse(localStorage.getItem("findlist"));
+                let name = receiveTea[src]['name']
+                let caffeine = receiveTea[src]['caffeine']
+                let benefitdetail = receiveTea[src]['benefitdetail']
+                let desc = receiveTea[src]['desc']
+                let caution = receiveTea[src]['caution']
+                let img = receiveTea[src]['img']
+                let like = receiveTea[src]['like']
+                let eng_type = receiveTea[src]['eng_type']
+
+                let temp_html = `<div class="window">
+                                    <div class="modal">
+                                        <div class="modal_top">
+                                            <div class="exit-button">
+                                                <i class="fa-solid fa-circle-xmark"></i>
+                                            </div>
+                                            <div class="modal_teaname">
+                                                <p style="text-align: center;font-size: 80px;color:#037057;margin:auto">${eng_type}</p>
+                                                <p style="text-align: right;font-size: 30px;color:#037057;margin:auto">${name}</p>
+                                            </div>
+                                        </div>
+                                        <div class="modal_bottom">
+                                            <div class="bottom_left">
+                                                <div class="bottom_left_box">
+                                                    <div class="hyoneung">
+
+                                                    </div>
+                                                    <div class="caffeine">
+                                                        <p style="color:#037057;text-align: left;">#카페인 함량</p>
+                                                        <p style="text-align: left">${caffeine}</p>
+                                                    </div>
+                                                    <hr width="inherit" color="#037057" size="1px">
+                                                    <div class="bottom_left_box_like">
+                                                        <span>♥<span id="likeNum"> ${like}</span></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bottom_middle">
+                                                <div class="bottom_middle_box">
+                                                    <img src="${img}" style="width:355px;height:496px;border-top-right-radius:250px;" id="teaimg"/>
+                                                </div>
+                                            </div>
+                                            <div class="bottom_right">
+                                                <div class="bottom_right_box">
+                                                    <div class="zzim">
+                                                        <div class="like-content">
+                                                            <button class="btn-secondary like-review">
+                                                                I like it <i class="fa fa-heart" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="notice">
+                                                        <span class="material-icons" style="font-size:15px;">bolt</span>
+                                                        <p style="text-align: left;">${caution}</p>
+                                                    </div>
+                                                    <div class="desc">
+                                                        <p style="text-align: left;">${desc}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`
+                $('.background').append(temp_html);
+
+                let benefit_list = benefitdetail.split(',');
+                // console.log(benefit_list);
+                for (let i = 0; i < benefit_list.length; i++) {
+                    let tmp = benefit_list[i];
+                    let tmp_html = `<div className="hashtag">${tmp}</div>`
+                    $('.hyoneung').append(tmp_html);
+                }
+
                 $(".background").fadeIn();
             });
+
 
             $(".exit-button").click(function () {
                 $(".background").fadeOut();
@@ -173,10 +272,8 @@
         <ul class="navigation">
             <li><a href="./" class="navi">차茶</a></li>
             <li style="float:right">
-                <a class="navi" href="./info"><span class="material-icons md-36"
-                                                    style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
-            <li style="float:right">
-                <a class="navi nav_login" id="loginText" href="./login"></a>
+                <a class="navi" href="./info"><span class="material-icons md-36" style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+            <li id='umm' style="float:right">
         </ul>
     </div>
 
@@ -189,14 +286,10 @@
                 </div>
             </div>
             <div class="mytaste_hashtag">
-                <div class="mytaste_tag">#녹차</div>
-                <div class="mytaste_tag">#다이어트</div>
-                <div class="mytaste_tag">#정신건강</div>
-                <div class="mytaste_tag">#카페인</div>
-                <div class="mytaste_tag">#질병예방</div>
+
             </div>
             <div class="mytaste_count">
-                <p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 00개입니다.</p>
+
             </div>
         </div>
     </div>
@@ -212,118 +305,12 @@
             </div>
             <div style="display:flex">
                 <div class="chosen_tea_list">
-<!--                    <div class="tea-box">-->
-<!--                        <img class="tea-image" width="261px" height="365.28px"-->
-<!--                             src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/etc/%ED%8E%98%ED%8D%BC%EB%AF%BC%ED%8A%B8.png">-->
-<!--                        <P style="color:#C53709;font-size:17px;">전차</P>-->
-<!--                        <P style="font-size: 10px;">BLACK TEA</P>-->
-<!--                    </div>-->
-<!--                    <div class="tea-box">-->
-<!--                        <img class="tea-image" width="261px" height="365.28px"-->
-<!--                             src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/etc/%ED%8E%98%ED%8D%BC%EB%AF%BC%ED%8A%B8.png">-->
-<!--                        <P style="color:#C53709;font-size:17px;">전차</P>-->
-<!--                        <P style="font-size: 10px;">BLACK TEA</P>-->
-<!--                    </div>-->
-<!--                    <div class="tea-box">-->
-<!--                        <img class="tea-image" width="261px" height="365.28px"-->
-<!--                             src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/etc/%ED%8E%98%ED%8D%BC%EB%AF%BC%ED%8A%B8.png">-->
-<!--                        <P style="color:#C53709;font-size:17px;">전차</P>-->
-<!--                        <P style="font-size: 10px;">BLACK TEA</P>-->
-<!--                    </div>-->
-<!--                    <div class="tea-box">-->
-<!--                        <img class="tea-image" width="261px" height="365.28px"-->
-<!--                             src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/etc/%ED%8E%98%ED%8D%BC%EB%AF%BC%ED%8A%B8.png">-->
-<!--                        <P style="color:#C53709;font-size:17px;">전차</P>-->
-<!--                        <P style="font-size: 10px;">BLACK TEA</P>-->
-<!--                    </div>-->
-<!--                    <div class="tea-box">-->
-<!--                        <img class="tea-image" width="261px" height="365.28px"-->
-<!--                             src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/etc/%ED%8E%98%ED%8D%BC%EB%AF%BC%ED%8A%B8.png">-->
-<!--                        <P style="color:#C53709;font-size:17px;">전차</P>-->
-<!--                        <P style="font-size: 10px;">BLACK TEA</P>-->
-<!--                    </div>-->
-<!--                    <div class="tea-box">-->
-<!--                        <img class="tea-image" width="261px" height="365.28px"-->
-<!--                             src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/etc/%ED%8E%98%ED%8D%BC%EB%AF%BC%ED%8A%B8.png">-->
-<!--                        <P style="color:#C53709;font-size:17px;">전차</P>-->
-<!--                        <P style="font-size: 10px;">BLACK TEA</P>-->
-<!--                    </div>-->
                 </div>
             </div>
         </div>
 
         <!-- 모달 페이지 -->
         <div class="background">
-            <div class="window">
-                <div class="modal">
-                    <div class="modal_top">
-
-                        <div class="exit-button">
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </div>
-                        <div class="modal_teaname">
-                            <p style="text-align: center;font-size: 80px;color:#037057;margin:auto">BLACK TEA</p>
-                            <p style="text-align: right;font-size: 30px;color:#037057;margin:auto">얼그레이</p>
-                        </div>
-                    </div>
-                    <div class="modal_bottom">
-                        <div class="bottom_left">
-                            <div class="bottom_left_box">
-                                <div class="hyoneung">
-                                    <div class="hashtag">지방분해</div>
-                                    <div class="hashtag">숙취해소</div>
-                                    <div class="hashtag">감기예방</div>
-                                    <div class="hashtag">심장건강</div>
-                                    <div class="hashtag">항암효과</div>
-                                    <div class="hashtag">치아건강</div>
-                                    <div class="hashtag">구취개선</div>
-                                </div>
-                                <div class="caffeine">
-                                    <p style="color:#037057;text-align: left;">#카페인 함량</p>
-                                    <p style="text-align: left">30~60mg/200ml</p>
-                                </div>
-                                <hr width="inherit" color="#037057" size="1px">
-                                <div class="bottom_left_box_like">
-                                    <span>♥<span id="likeNum"> 10</span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bottom_middle">
-                            <div class="bottom_middle_box">
-                                <img
-                                        src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/%EB%B0%B1%EC%B0%A8_White+Tea/%EB%B0%B1_%EC%88%98%EB%AF%B8%EC%B0%A8.png"
-                                        style="width:355px;height:496px;border-top-right-radius:250px;" id="teaimg"/>
-                            </div>
-                        </div>
-                        <div class="bottom_right">
-                            <div class="bottom_right_box">
-                                <div class="zzim">
-                                    <div class="like-content">
-                                        <button class="btn-secondary like-review">
-                                            I like it <i class="fa fa-heart" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="notice">
-                                    <span class="material-icons" style="font-size:15px;">bolt</span>
-                                    <p style="text-align: left;">카페인이 포함되어 있기 때문에 신체적으로 카페인에 민감하다면 양을 조절해 먹어야 하며, 탄닌 성분은
-                                        비타민과 같은 영양제의
-                                        흡수를 막기 때문에 이를 유의해야
-                                        한다. 체온을 높이기
-                                        때문에 고열일 때는 홍차보다는 해열작용이 있는 백차가 좋다.</p>
-                                </div>
-                                <div class="desc">
-                                    <p style="text-align: left;">중국의 보이차와 달리 우리 나라 고유의 흑차이다. 이름의 뜻은 '푸른 이끼가 낀 엽전'으로 생긴 것
-                                        그대로를 표현한다. 주로
-                                        전라남도 장흥군에서 재배된다.
-                                        진홍빛의 차색은 오미자차와 비슷하지만 맛과 향은 옥수수차나 보리차와 가깝다. 생강, 오가피, 귤 껍질을 같이 넣고 우리면 향과 맛이 더
-                                        좋아진다.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

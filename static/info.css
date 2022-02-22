@@ -1,206 +1,214 @@
 * {
-  list-style: none;
-  text-decoration: none;
-  border-collapse: collapse;
-  font-family: 'Noto Serif KR', serif;
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
+    list-style: none;
+    text-decoration: none;
+    border-collapse: collapse;
+    font-family: 'Noto Serif KR', serif;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
 }
 
 body {
-background-color:#F5ECE6;
-display: flex;
-height: 1080px;
+    background-color: #F5ECE6;
+    display: flex;
+    height: 1080px;
 }
 
 /*나누기*/
 .left_side {
-flex-shrink: 0;
-width: 580px;
-border-right: 2px solid #C53709;
-/*padding:10px;*/
-display: flex;
-flex-direction: column;
+    flex-shrink: 0;
+    width: 580px;
+    border-right: 2px solid #C53709;
+    /*padding:10px;*/
+    display: flex;
+    flex-direction: column;
 }
-.right_side{
-flex-grow: 1;
-/*padding:10px;*/
-display: flex;
-flex-direction: column;
+
+.right_side {
+    flex-grow: 1;
+    /*padding:10px;*/
+    display: flex;
+    flex-direction: column;
 }
-.left_top{
-flex-shrink: 0;
-height: 56px;
-background-color: #C53709;
-text-align: left;
+
+.left_top {
+    flex-shrink: 0;
+    height: 56px;
+    background-color: #C53709;
+    text-align: left;
 }
-.left_middle{
-flex:8;
-border-bottom: 2px solid #C53709;
-display : flex;
+
+.left_middle {
+    flex: 8;
+    border-bottom: 2px solid #C53709;
+    display: flex;
 }
+
 /*제일 큰 타이틀*/
-.big_Title{
-text-align: left;
-font-size: 80px;
-font-family: 'Bodoni Moda', serif;
-align-self: flex-end;
-height: 280px;
-line-height: 100px;
+.big_Title {
+    text-align: left;
+    font-size: 80px;
+    font-family: 'Bodoni Moda', serif;
+    align-self: flex-end;
+    height: 280px;
+    line-height: 100px;
 }
 
-.left_bottom{
-flex:1 0 0;
-align-self: flex-end;
+.left_bottom {
+    flex: 1 0 0;
+    align-self: flex-end;
 }
 
-.right_top{
-flex-shrink: 0;
-height: 56px;
-background-color: #C53709;
+.right_top {
+    flex-shrink: 0;
+    height: 56px;
+    background-color: #C53709;
 }
+
 .right_middle {
-flex: 8;
-border-bottom: 2px solid #C53709;
-text-align:left;
+    flex: 8;
+    border-bottom: 2px solid #C53709;
+    text-align: left;
 }
+
 .right_bottom {
-flex:1 0 0;
-align-self: flex-end;
+    flex: 1 0 0;
+    align-self: flex-end;
 }
 
 /*네비게이션*/
-.manager_nav{
-display : flex;
-padding: 15px 60px 0px 60px;
+.manager_nav {
+    display: flex;
+    padding: 15px 60px 0px 60px;
 }
 
-.left_top a{
-  color: #F5ECE6;
-  font-size: 21px;
-  line-height: 55px;
-  padding-left: 38px;
+.left_top a {
+    color: #F5ECE6;
+    font-size: 21px;
+    line-height: 55px;
+    padding-left: 38px;
 }
 
-.manager_nav{
-flex-direction: row-reverse;
+.manager_nav {
+    flex-direction: row-reverse;
 }
 
-.manager_nav li a{
-  color:#F5ECE6;
+.manager_nav li a {
+    color: #F5ECE6;
 }
 
-.material-icons.md-36 { 
-  font-size: 25px;
-  line-height: inherit;
-  padding: 0px 0px 0px 40px;
+.material-icons.md-36 {
+    font-size: 25px;
+    line-height: inherit;
+    padding: 0px 0px 0px 40px;
 }
 
 /*바꿔야 할 부분 (폼)*/
-.saveform-box{
-display: inline-block;
-margin: 80px 146px 70px 146px;
-color: #C53709;
+.saveform-box {
+    display: inline-block;
+    margin: 80px 146px 70px 146px;
+    color: #C53709;
 }
 
 /*큰 제목*/
 .information_title {
-font-size:50px;
-margin-bottom: 30px;
+    font-size: 50px;
+    margin-bottom: 30px;
 }
 
 /*컨텐츠 감싸는 div*/
 .saveform {
-font-size: 16px;
-width:1017px;
-position: relative;
+    font-size: 16px;
+    width: 1017px;
+    position: relative;
 }
 
 /*input 모음 감싸는 div*/
-.insert_form{
-position: relative;
-display: flex;
-flex-wrap: wrap;
-align-items: stretch;
-width: 100%;
-margin-bottom: 20px;
-height: 40px;
+.insert_form {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    margin-bottom: 20px;
+    height: 40px;
 
 }
 
 /*인덱스칸 감싸는 div*/
 .insert_form_name {
-height: 100%;
-background-color:#C53709;
-width: 100px;
-text-align: center;
+    height: 100%;
+    background-color: #C53709;
+    width: 100px;
+    text-align: center;
 }
 
 /*입력칸*/
-.insert_input{
-flex: 1 1 auto;
-background: transparent;
-border: 2px solid #C53709;
-color: #C53709;
-text-align: left;
-padding-left: 10px;
-line-height: 35px;
+.insert_input {
+    flex: 1 1 auto;
+    background: transparent;
+    border: 2px solid #C53709;
+    color: #C53709;
+    text-align: left;
+    padding-left: 10px;
+    line-height: 35px;
 }
+
 /*인덱스*/
 .insert_text {
-color: #F5ECE6;
-line-height: 40px;
+    color: #F5ECE6;
+    line-height: 40px;
 }
 
 /*버튼*/
-.btn{
-width: 160px;
-font-size: 20px;
-background-color: #C53709;
-color: #F5ECE6;
-border: 0px;
-position: absolute;
-right: 0px;
-padding: 7px;
-cursor: pointer;
+.btn {
+    width: 160px;
+    font-size: 20px;
+    background-color: #C53709;
+    color: #F5ECE6;
+    border: 0px;
+    position: absolute;
+    right: 0px;
+    padding: 7px;
+    cursor: pointer;
 }
 
 /*찜목록*/
-.info2{
-	margin-top: 140px;
+.info2 {
+    margin-top: 140px;
 }
 
 /*문단 시작 기호*/
 .small_title {
-  text-align: left;
-  font-size: 30px; font-weight: 900;
+    text-align: left;
+    font-size: 30px;
+    font-weight: 900;
 }
 
 .img-box {
-  text-align: left;
+    text-align: left;
 }
 
 /*슬라이드 이미지*/
-.slider-image{
-  margin-top: 25px;
-  width:200px;
-  height:260px;
+.slider-image {
+    margin-top: 25px;
+    width: 200px;
+    height: 260px;
 }
 
-.post p{
-  margin-top: 6px;
-  font-size: 18px;
+.post p {
+    margin-top: 6px;
+    font-size: 18px;
 }
 
-.zzim-button{
-  float: right;
-  font-size:20px;
-  cursor:pointer;
-  color: #C53709;
-  font-size:20px;
-  font-weight: bold;
-  line-height: 65px;
-  margin-right: 10px;
+.zzim-button {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+    color: #C53709;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 65px;
+    margin-right: 10px;
 }
 
