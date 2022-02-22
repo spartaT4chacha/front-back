@@ -140,7 +140,11 @@ def saveTea():
 @app.route('/recommend/find', methods=['POST'])
 def read_mongo():
     # df_all : Pandas(패키지)로 데이터프레임 형태를 만들어, DB 전체를 불러온다.
-    df_all = pd.DataFrame(list(db.tealist.find({}, {'_id': False})))
+    data_list = list(db.tealist.find({}, {'_id': False}))
+
+    random.shuffle(data_list)
+    df_all = pd.DataFrame(data_list)
+
     selector_receive = request.get_json()
     type_receive = selector_receive['type_give']
     benefit_receive = selector_receive['benefit_give']
@@ -189,7 +193,7 @@ def recommend_page():
 @app.route('/tea/list', methods=['GET'])
 def getTea():
     tea_List = list(db.tealist.find({}, {'_id': False}))
-    random.shuffle(tea_List)  # 랜덤 정렬
+    random.shuffle(tea_List)  # 랜덤 정렬 good good
     return jsonify({'all_teas':tea_List})
 
 # 검색 기능 -- 영은

@@ -27,8 +27,7 @@
 
 
     <script>
-
-
+<!--        다큐먼트 레디에서 실행을하면, singstatus있고  is login이 있는데 sign이 돌아가는 동안 병렬이라 islogin이 갱신이 안된다.-->
         $(function () {
             $("a").click(function () {
                 $(".modal").fadeIn();
@@ -44,8 +43,8 @@
         let isLogin = false;
 
 
-        $(document).ready(function () {
-            signStatus();
+        (document).ready(async function () {
+            await signStatus();
             if (isLogin) {
                 // 홈화면으로 이동하기!!!!!!!!
                 var loginText = "로그아웃";
