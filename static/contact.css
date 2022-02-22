@@ -1,0 +1,112 @@
+* {
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  font-family: 'Noto Serif KR', serif;
+}
+body {
+background-color: #017258;
+position: relative;
+border: 1px solid #017258;
+height: 100%;
+}
+
+.card-closebtn{
+position: absolute;
+top: 55px;
+left: 55px;
+font-size: 20px;
+background-color: white;
+border-radius: 50%;
+}
+
+.closebutton {
+width: 42px;
+height: 42px;
+}
+
+.closebutton:before, .closebutton:after {
+position: absolute;
+left: 18.5px;
+content: ' ';
+top: 8px;
+height: 25px;
+width: 3px;
+background-color: #017258;
+}
+.closebutton:before {
+transform: rotate(45deg);
+}
+.closebutton:after {
+transform: rotate(-45deg);
+}
+
+.contact{
+margin: 180px auto 0px auto;
+}
+
+.contact_title {
+font-size: 15px;
+color:#017258;
+background-color: #FEBC2A;
+display: inline-block;
+width: 276.5px;
+height: 69px;
+line-height: 69px;
+border-radius: 50%;
+}
+
+.card-row{
+  display: flex;
+  flex-direction: row;
+  margin: 50px auto 60px;
+}
+.card-blank{
+flex: 2;
+width: 25%;
+}
+.card-box-cover{
+flex: 5;
+}
+.card-box{
+background-color: white;
+margin: 20px 25px;
+width: 186px;
+display: inline-block;
+color:#017258;
+height: 235px;
+border-radius: 10px;
+}
+.card-box span{
+font-weight: bold;
+display: inline-block;
+font-family: 'Noto Sans KR', sans-serif;
+font-size: 17px;
+}
+
+.card-box p{
+font-size: 10px;
+padding-top: 4px;
+margin-bottom: 6px;
+font-family: 'Noto Sans KR', sans-serif;
+}
+
+.card-image{
+background-color:white;
+width: 130px;
+height: 130px;
+border-radius: 50%;
+margin: 24px auto 20px;
+}
+
+.clip-circle{
+width: 130px;
+height: 130px;
+background-image: cover;
+background-position: center;
+/* background-size: contain; */
+clip-path: circle(65px at center)
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 페이지 이름 -->
+  <title>Info edit | Chacha</title>
+  <!-- 파비콘 -->
+  <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+  <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <!-- JQuery를 import 합니다 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="../static/js/sign.js"></script>
+
+  <link rel="stylesheet" href="../static/info_edit.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap"
+    rel="stylesheet">
+</head>
+
+
+<script>
+  $(document).ready(function () {
+    signStatus();
+    if (isLogin) {
+      // 로그인 아이디 물어보기!!!
+    } else {
+      // 로그인 페이지로 이동하기!!
+      // location.href"
+
+      // location.href="./login.html";  
+    }
+
+  });
+
+  //  signin&out
+  let isLogin = false;
+
+  async function signStatus() {
+    isLogin = await sign_checkSign();
+    if (isLogin) signin_mode();
+    else signout_mode();
+  }
+
+
+  function check_delete() {
+    let pw = $("#user_pass").val();
+    let check = $("input[name = leave]:checked").val();
+    if (pw && check == "탈퇴") {
+      $("#btn_leave").attr("disabled", false);
+      $("#btn_leave").css("opacity", "100%");
+    } else {
+      $("#btn_leave").attr("disabled", true);
+      $("#btn_leave").css("opacity", "50%");
+    }
+  }
+
+  function check_yes_no(){
+    let pw = $("#user_pass").val();
+    if (pw){
+      $('input[name=leave]').attr("disabled", false);
+      $("#btn_leave").attr("disabled", false);
+      $("#btn_leave").css("opacity", "100%");
+    }else{
+      $('input[name=leave]').attr("disabled", true);
+      $("#btn_leave").attr("disabled", true);
+      $("#btn_leave").css("opacity", "50%");
+    }
+  }
+
+  function check_change_pw() {
+    var current_pass = $("#current_pass").val();
+    var new_pass = $("#new_pass").val();
+    var new_pass_check = $("#new_pass_check").val();
+
+    if (current_pass && (new_pass == new_pass_check)) {
+      $("#btn_edit_pw").attr("disabled", false);
+      $("#btn_edit_pw").css("opacity", "100%");
+    }
+    else {
+      $("#btn_edit_pw").css("opacity", "50%");
+      $("#btn_edit_pw").attr("disabled", true);
+    }
+  }
+
+
+</script>
+
+<body>
+  <!-- 왼쪽 -->
+  <div class="left_side">
+    <div class="left_top">
+      <a href="./index.html"> 차茶 </a>
+    </div>
+    <div class="left_middle">
+      <div class="big_Title">
+        <!-- 페이지 용도에 맞춰서 수정 필요-->
+        <p style="color:#C53709; text-align: left; padding-left:20px;">Account<br>Management</p>
+      </div>
+    </div>
+    <div class="left_bottom">
+    </div>
+  </div>
+  <!-- 오른쪽 -->
+  <div class="right_side">
+    <div class="right_top">
+      <ul class="manager_nav" id="right_nav">
+        <li class="right_nav-item1">
+          <a href="./info.html"><span class="material-icons md-36">&#xE87C;</span></a>
+        </li>
+        <li class="right_nav-item2">
+          <a href="./login.html">로그아웃</a>
+        </li>
+      </ul>
+    </div>
+    <div class="right_middle">
+
+      <!-- 제목 부분 -->
+      <div class="saveform-box">
+        <div class="information_title">
+          <p style="text-align: left;">Account Management</p>
+        </div>
+
+        <div class="saveform">
+          <div class='info1'>
+            <div class="small_title" style="margin-bottom: 20px;">
+              <span>| </span>
+              <span style="font-size: 25px; font-weight: bold;">비밀번호 변경</span>
+            </div>
+            <!-- 현재 비밀번호 -->
+            <div class="insert_form">
+              <div class="insert_form_name">
+                <span class="insert_text">현재 비밀번호</span>
+              </div>
+              <input class="insert_input" id="current_pass" type="text" />
+            </div>
+            <!-- 새비밀번호 -->
+            <div class="insert_form">
+              <div class="insert_form_name">
+                <span class="insert_text">새 비밀번호</span>
+              </div>
+              <input class="insert_input" id="new_pass" type="text" />
+            </div>
+            <!-- 새 비밀번호 확인 -->
+            <div class="insert_form">
+              <div class="insert_form_name">
+                <span class="insert_text">새 비밀번호 확인</span>
+              </div>
+              <input class="insert_input" id="new_pass_check" type="text" onchange="check_change_pw()"/>
+            </div>
+            <button type="button" class="btn" id="btn_edit_pw" onclick="test_change_pass();" disabled>저장</button>
+          </div>
+
+          <div class='info2'>
+            <div class="small_title" style="margin-bottom: 20px;">
+              <span>| </span>
+              <span style="font-size: 25px; font-weight: bold;">회원탈퇴 </span>
+            </div>
+                          <div class="insert_form">
+                <div class="insert_form_name">
+                  <span class="insert_text">현재 비밀번호</span>
+                </div>
+                <input class="insert_input" id="user_pass" type="text" onchange="check_yes_no()"/>
+              </div>
+            <div id="form_mg_tea_benefit" class="insert_form">
+              <div class="insert_form_name_1">
+                <span class="insert_text">정말로 탈퇴하시겠어요?</span>
+              </div>
+              <div class="insert_input" id="insert_eff">
+                <input type="radio" name="leave" id="leave_1" value="탈퇴" onclick="check_delete()" disabled>
+                <label for="leave_1" style="margin-right: 34px"><span></span>예</label>
+                <input type="radio" name="leave" id="leave_0" value="탈퇴안함" disabled>
+                <label for="leave_0"><span></span>아니요</label>
+              </div>
+            </div>
+
+
+            <a href=" "><button class="btn" id="btn_leave" onclick="test_delete_user()" disabled>확인</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right_bottom"></div>
+  </div>
+</body>
+
+</html>

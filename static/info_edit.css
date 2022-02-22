@@ -1,0 +1,283 @@
+* {
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  font-family: 'Noto Serif KR', serif;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+}
+
+body {
+background-color:#F5ECE6;
+display: flex;
+height: 1080px;
+}
+
+/*나누기*/
+.left_side {
+flex-shrink: 0;
+width: 580px;
+border-right: 2px solid #C53709;
+/*padding:10px;*/
+display: flex;
+flex-direction: column;
+}
+
+.right_side{
+flex-grow: 1;
+/*padding:10px;*/
+display: flex;
+flex-direction: column;
+}
+
+.left_top{
+flex-shrink: 0;
+height: 56px;
+background-color: #C53709;
+/* border-bottom: 2px soli d #C53709; */
+text-align: left;
+}
+
+.left_middle{
+flex:8;
+border-bottom: 2px solid #C53709;
+display : flex;
+}
+
+/*제일 큰 타이틀*/
+.big_Title{
+text-align: left;
+font-size: 80px;
+font-family: 'Bodoni Moda', serif, bold;
+align-self: flex-end;
+height: 280px;
+line-height: 90px;
+font-weight: 550;
+}
+
+.left_bottom{
+flex:1 0 0;
+align-self: flex-end;
+}
+
+.right_top{
+flex-shrink: 0;
+height: 56px;
+background-color: #C53709;
+}
+.right_middle {
+flex: 8;
+border-bottom: 2px solid #C53709;
+text-align:left;
+}
+.right_bottom {
+flex:1 0 0;
+align-self: flex-end;
+}
+
+/*네비게이션*/
+.manager_nav{
+  display : flex;
+  padding: 15px 60px 0px 60px;
+  }
+  
+  .left_top a{
+    color: #F5ECE6;
+    font-size: 21px;
+    line-height: 55px;
+    padding-left: 38px;
+  }
+  
+  .manager_nav{
+  flex-direction: row-reverse;
+  }
+  
+  .manager_nav li a{
+    color:#F5ECE6;
+  }
+  
+  .material-icons.md-36 { 
+    font-size: 25px;
+    line-height: inherit;
+    padding: 0px 0px 0px 40px;
+  }
+
+/*바꿔야 할 부분 (폼)*/
+.saveform-box{
+  display: inline-block;
+	margin: 110px 146px 140px 146px;
+  color: #C53709;
+  }
+
+/*큰 제목*/
+.information_title {
+  font-size:50px;
+  margin-bottom: 45px;
+  font-weight: 500;
+  }
+
+/*컨텐츠 감싸는 div*/
+.saveform {
+font-size: 16px;
+width:1017px;
+position: relative;
+}
+/*input 모음 감싸는 div*/
+.insert_form{
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 25px;
+  height: 40px;
+  }
+
+/*인덱스칸 감싸는 div*/
+.insert_form_name {
+height: 100%;
+background-color:#C53709;
+width: 150px;
+text-align: center;
+}
+
+/*입력칸*/
+.insert_input{
+flex: 1 1 auto;
+background: transparent;
+border: 2px solid #C53709;
+color: #C53709;
+text-align: left;
+padding-left: 10px;
+line-height: 30px;
+
+}
+/*인덱스*/
+.insert_text {
+color: #F5ECE6;
+line-height: 40px;
+}
+
+/*버튼*/
+.btn{
+width: 160px;
+font-size: 20px;
+background-color: #C53709;
+color: #F5ECE6;
+border: 0px;
+position: absolute;
+right: 0px;
+padding: 7px;
+cursor: pointer;
+margin-top: 10px;
+opacity: 50%;
+}
+
+
+/*회원탈퇴*/
+.info2{
+margin-top: 90px;
+}
+
+/* 라디오 버튼 꾸미기 */
+input[type="radio"] {
+  display:none;
+}
+
+input[type="radio"] + label span {
+  display:inline-block;
+  width:19px;
+  height:19px;
+  margin:-2px 10px 0 0;
+  vertical-align:middle;
+  background-color:transparent;
+  cursor:pointer;
+  border: 1.09px solid #C53709;
+  border-radius: 2px;
+}
+
+input[type="radio"]:checked + label span {
+  background-color: #C53709;
+  border: none;
+  color: #C53709;
+}
+
+/*문단 시작 기호*/
+  .small_title {
+    text-align: left;
+    font-size: 30px; font-weight: 900;
+  }
+
+.insert_form_name_1 {
+  height: 100%;
+  background-color:#C53709;
+  width: 250px;
+  text-align: center;
+}
+
+.insert_ch {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+#insert_eff{
+  line-height: 35px;
+  text-align: right;
+  padding-right: 80px;
+}
+
+@media all and (max-width:800px){
+  body {
+    height: 100%;
+  }
+
+ .left_side {
+   width: 100px;
+   border: none;
+ }
+
+.left_middle{
+  display: none;
+}
+ .right_bottom{
+   display: none;
+ }
+
+ .manager_nav{
+  padding-right:40px;
+  }
+
+ .saveform-box{
+  display: inline-block;
+  margin: 50px 20px 0px -75px;
+}
+  .right_middle{
+    border: none;
+  }
+
+  .saveform {
+    width:93%;
+  }
+ .info1{
+   margin-bottom: 100px;
+ }
+
+
+  .insert_form{
+    display: block;
+    margin-bottom: 50px;
+  }
+  
+  .insert_input{
+    width: 100%;
+    height: inherit;
+  }
+
+  #insert_eff{
+    padding-right: 0px;
+    text-align: center;
+  }
+}
+
+

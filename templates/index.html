@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../static/mainPage.css">
+    <!-- jQuery 사용하기 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/mainPage.js"></script>
+
+    <title>차茶 | Chacha</title>
+
+    <script src="../static/js/modernizr.js"></script> <!-- Modernizr -->
+    <link re l="stylesheet" href="../static/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="../static/style.css"> <!-- Resource style -->
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&family=Bodoni+Moda:wght@500&family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap"
+            rel="stylesheet">
+
+    <!-- 파비콘 -->
+    <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- 로그인 js-->
+    <script src="../static/js/sign.js"></script>
+
+
+</head>
+
+<script>
+
+    // 선택 횟수 배열
+    let arr1 = new Array();
+    let arr2 = new Array();
+    //로그인 상태 확인하기 위한 전역변수 설정.
+    let isLogin = false;
+
+    //로그인 상태를 확인하기 위한 함수.
+    async function signStatus() {
+        isLogin = await sign_checkSign();
+        if (isLogin) signin_mode();
+        else signout_mode();
+    }
+
+    function signin_mode() {
+        isLogin = true;
+        $('#signupPage').hide();
+        $('#signinPage').hide();
+        $('#signinoutBtn').text('로그아웃');
+    }
+
+    function signout_mode() {
+        isLogin = false;
+        $('#signupPage').show();
+        $('#signinPage').show();
+        $('#signinoutBtn').text('로그인');
+        sign_signout();
+    }
+
+    //페이지가 그려지면 실행되어야 할 함수.
+    $(document).ready(function () {
+        //풀페이지..js
+        $('#fullpage').fullpage({
+            //options here
+            licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
+            autoScrolling: true,
+            scrollHorizontally: true
+        });
+
+        //로그인 상태 확인하기
+        signStatus();
+
+        if (isLogin) {
+            let loginText = `로그아웃`;
+            // console.log("이거 실행?")
+        } else {
+            loginText = `로그인`;
+            console.log("아니 이거 실행!")
+        }
+        $("#loginText").text(loginText);
+
+
+        //페이지 시작할 때마다 초기화 해주므로 유저가 전역변수 겹칠 일 없음.
+        for (let i = 0; i < 8; i++) {
+            arr1[i] = 0;
+            arr2[i] = 0;
+        }
+    });
+
+
+    //local storage로 데이터를 전송
+    async function get_search() {
+        // redirect -> tea_list
+        // search 값을 같이 안겨서 보내야 한다.
+        let search = $("#search").val();
+        // ajax 작성이랑 같은 fetch 사용
+        let response = await fetch('/data/search', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(search)
+        }).then(result => result.json());
+
+        return response;
+    }
+
+
+    //서버단 data/category에 정보 전송하기
+    async function get_ct_list() {
+        let type = ['백차', '녹차', '홍차', '황차', '청차', '흑차', '기타'];
+        let effect = ['다이어트', '피로회복', '면역증진', '피부미용', '질병예방', '정신건강', '혈액순환', '소화기능'];
+        result1 = new Array;
+        result2 = new Array;
+        for (let i = 0; i < 8; i++) {
+            if (arr1[i] % 2 != 0) {
+                result1.push(type[i]);
+            }
+            if (arr2[i] % 2 != 0) {
+                result2.push(effect[i]);
+            }
+        }
+        var caffeine = $(':radio[name="caffien"]:checked').val();
+        console.log(result1, result2, caffeine);
+        if (caffeine === "카페인") {
+            caffeine = [true]
+        } else {
+            caffeine = [true]
+        }
+        //서버에 전송하기
+        $.ajax({
+            type: "POST",
+            url: "/recommend/find",
+            headers: {'Content-Type': 'application/json'},
+            dataType: 'json',
+            data: JSON.stringify({
+                type_give: result1,
+                benefit_give: result2,
+                caffeineOX_give: caffeine,
+            }),
+            success: function (response) {
+
+                // $('#box').empty()
+                let Tea = JSON.parse(response['find_teas'])   /*서버에서 string으로 들어와서 JSON.parse 사용*/
+                console.log(Tea)
+
+                localStorage.setItem("findlist", JSON.stringify(Tea));
+                location.href = "/tea_list";
+            }
+        })
+
+    }
+
+    // 슬라이드 jquery
+    jQuery(document).ready(function (e) {
+        $("#smallImg img").click(function () {
+
+            var path = $(this).attr("src");
+            console.log(path)
+
+            $("#largeImg > img").attr({src: path});
+            $("#largeImg > img").css("opacity", "0").stop().animate({opacity: 1}, 1000);
+            return false;
+        })
+    })
+
+    var target = document.getElementsByClassName("types");
+    var target2 = document.getElementsByClassName("benefits");
+
+    function btnScaleChange(e) {
+        arr1[e] += 1;
+        console.log(arr1[e])
+        // 홀수인 경우..
+        if (arr1[e] % 2 != 0) {
+            target[e].style.transform = "scale(1.5)"
+
+        } else {
+            target[e].style.transform = "scale(1.0)";
+        }
+    }
+
+    function btnbgclChange(e) {
+        arr2[e] += 1;
+        if (arr2[e] % 2 == 0) {
+            target2[e].style.backgroundColor = "transparent";
+            target2[e].style.color = "#0F3331";
+        } else {
+            target2[e].style.backgroundColor = "#C53709";
+            target2[e].style.color = "#EBE7DC";
+
+        }
+    }
+
+
+</script>
+<body>
+<div id="fullpage">
+    <div class="section">
+        <header>
+            <!-- <a class="cd-logo" href="#0"><img src="img/cd-logo.svg" alt="Logo"></a> -->
+            <ul class="navigation">
+                <li><a href="#" class="navi">차茶</a></li>
+                <li style="float:right">
+                    <a class="navi" href="./info"><span class="material-icons md-36"
+                                                        style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+                </li>
+                <li style="float:right">
+                    <a class="navi nav_login" id="loginText" style="margin-right: 40px;" href="./login"></a>
+                </li>
+            </ul>
+        </header>
+
+        <nav>
+            <ul class="cd-primary-nav"></ul>
+        </nav>
+        <a href="#0" class="cd-nav-trigger"><span class="cd-icon"></span></a>
+
+        <!-- 첫번째 페이지 -->
+        <section class="mainpage">
+            <div class="center">
+                <div class="main">
+                    <div class="main-img-cover">
+                        <div class="main-circle"></div>
+                        <img class="main-img" src='https://ifh.cc/g/2Dc0nl.png'>
+                    </div>
+                    <div class="main_title">
+                        <div style="width: 15px; display: inline-block;"></div>
+                        <span>오늘 마실 차 고민없이, 차茶</span>
+                        <h1>#CHACHA</h1>
+                    </div>
+
+                    <div class="searchBar">
+                        <input id="search" placeholder="#내_취향 #셀프추천" type="text"/>
+                        <!-- <a href="./tea_list" onclick="get_search()"><span style="line-height: 46px; color:#0f3331"
+                            class="material-icons">search</span></a> -->
+                        <button onclick="get_search()" style="line-height: 46px; color:#0f3331"
+                                class="material-icons">search
+                        </button>
+                    </div>
+                </div>
+
+                <p id="scroll_leader"><span></span><span></span><span></span></p>
+            </div>
+        </section>
+
+        <!-- 햄버거에서 풀페이지로 나오는 모션 -->
+        <div class="cd-overlay-nav"><span></span></div>
+        <div class="cd-overlay-content"><span></span></div>
+    </div>
+
+    <!-- 두번째 페이지 -->
+    <div class="section" id="sec2">
+        <section class="mainpage">
+            <div class="center">
+                <div class="main2">
+
+                    <!-- ************ 슬라이드 나올 부분 (스타일 지우고 쓰세용) ************ -->
+                    <div id="gallery">
+
+                        <div id="smallImg">
+                            <!-- 작은 이미지 -->
+                            <img src="https://cdn.pixabay.com/photo/2021/07/30/11/43/tea-6509443_1280.jpg" width=90px;
+                                 height=90px;
+                                 alt=""/>
+                            <img
+                                    src="https://images.pexels.com/photos/8330249/pexels-photo-8330249.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+                                    width=90px; height=90px; alt=""/>
+                            <img src="https://cdn.stocksnap.io/img-thumbs/960w/hands-pouring_H1SR2TNSL9.jpg" width=90px;
+                                 height=90px; alt=""/>
+                            <img
+                                    src="https://images.pexels.com/photos/5946689/pexels-photo-5946689.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                                    width=90px; height=90px; alt=""/>
+
+                        </div>
+
+                        <div id="largeImg">
+                            <!-- 큰 이미지  -->
+                            <img class="larg-img" width="379.54px" height="560px"
+                                 src="https://cdn.pixabay.com/photo/2021/07/30/11/43/tea-6509443_1280.jpg">
+                        </div>
+
+                    </div>
+                    <!-- ************ 슬라이드 나올 부분 ************ -->
+
+                    <div class="category">
+                        <div class="cat_Qs_cover">
+                            <div class="cat_Qs">
+                                <p>차 종류</p>
+                            </div>
+                            <hr width="inherit" color="#0F3331;" size="1.09px">
+                        </div>
+                        <div style="margin-bottom: 50px;">
+                            <button name='type' onclick="btnScaleChange(0)" class="types"
+                                    style="background-color: #BAB3A7;">백차
+                            </button>
+                            <button name='type' onclick="btnScaleChange(1)" class="types"
+                                    style="background-color: #88894E;">녹차
+                            </button>
+                            <button name='type' onclick="btnScaleChange(2)" class="types"
+                                    style="background-color: #984A2F;">홍차
+                            </button>
+                            <button name='type' onclick="btnScaleChange(3)" class="types"
+                                    style="background-color: #AA8C4E;">황차
+                            </button>
+                            <button name='type' onclick="btnScaleChange(4)" class="types"
+                                    style="background-color: #474F57;">청차
+                            </button>
+                            <button name='type' onclick="btnScaleChange(5)" class="types"
+                                    style="background-color: #5A544E;">흑차
+                            </button>
+                            <button name='type' onclick="btnScaleChange(6)" class="types"
+                                    style="background-color: #686376;">기타
+                            </button>
+                        </div>
+                        <div class="cat_Qs_cover cover_2">
+                            <div class="cat_Qs">
+                                <p>효능<span style="font-size: 10.94px;"> (복수선택 가능)</span></p>
+                            </div>
+                            <hr width="inherit" color="#0F3331;" size="1.09px">
+                        </div>
+                        <div style="margin-bottom: 18px;">
+                            <button name='benefit' onclick="btnbgclChange(0)" class="benefits bene_left">#다이어트</button>
+                            <button name='benefit' onclick="btnbgclChange(1)" class="benefits">#피로회복</button>
+                            <button name='benefit' onclick="btnbgclChange(2)" class="benefits">#면역증진</button>
+                            <button name='benefit' onclick="btnbgclChange(3)" class="benefits bene_right">#피부미용</button>
+                            <button name='benefit' onclick="btnbgclChange(4)" class="benefits bene_left">#질병예방</button>
+                            <button name='benefit' onclick="btnbgclChange(5)" class="benefits">#정신건강</button>
+                            <button name='benefit' onclick="btnbgclChange(6)" class="benefits">#혈액순환</button>
+                            <button name='benefit' onclick="btnbgclChange(7)" class="benefits bene_right">#소화기능</button>
+                        </div>
+                        <hr width="inherit" color="#0F3331;" size="1.09px">
+                        <div class="radio_btn">
+                            <input type="radio" name="caffien" id="caffien_1" value="카페인">
+                            <label for="caffien_1" style="margin-right: 34px"><span></span>카페인</label>
+                            <input type="radio" name="caffien" id="caffien_0" value="디카페인">
+                            <label for="caffien_0"><span></span>디카페인</label>
+                        </div>
+                        <button type="button" onclick="get_ct_list()" class="btn">#내_취향 알아보기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- 끝 -->
+    </div>
+</div>
+
+<!-- <script src="../js/jquery-2.1.1.js"></script> -->
+<script src="../static/js/velocity.min.js"></script>
+<script src="../static/js/main.js"></script>
+</body>
+
+
+</html>

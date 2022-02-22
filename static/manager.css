@@ -1,0 +1,275 @@
+* {
+    list-style: none;
+    text-decoration: none;
+    border-collapse: collapse;
+    font-family: 'Noto Serif KR', serif;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+}
+
+body {
+  background-color:#F5ECE6;
+  display: flex;
+  height: 1080px;
+}
+
+/*나누기*/
+.left_side {
+  flex-shrink: 0;
+  width: 580px;
+  border-right: 2px solid #C53709;
+  /*padding:10px;*/
+  display: flex;
+  flex-direction: column;
+}
+.right_side{
+  flex-grow: 1;
+  /*padding:10px;*/
+  display: flex;
+  flex-direction: column;
+}
+.left_top{
+  flex-shrink: 0;
+  height: 56px;
+  background-color: #C53709;
+  text-align: left;
+}
+.left_middle{
+  flex:8;
+  border-bottom: 2px solid #C53709;
+  display : flex;
+}
+/*제일 큰 타이틀*/
+.big_Title{
+  text-align: left;
+  font-size: 80px;
+  font-family: 'Bodoni Moda', serif;
+  align-self: flex-end;
+  height: 280px;
+  line-height: 100px;
+}
+
+.left_bottom{
+  flex:1 0 0;
+  align-self: flex-end;
+}
+
+.right_top{
+  flex-shrink: 0;
+  height: 56px;
+  background-color: #C53709;
+}
+.right_middle {
+  flex: 8;
+  border-bottom: 2px solid #C53709;
+  text-align:left;
+}
+.right_bottom {
+  flex:1 0 0;
+  align-self: flex-end;
+}
+
+/*네비게이션*/
+.manager_nav{
+display : flex;
+padding: 15px 60px 0px 60px;
+}
+
+.left_top a{
+  color: #F5ECE6;
+  font-size: 21px;
+  line-height: 55px;
+  padding-left: 38px;
+}
+
+.manager_nav{
+flex-direction: row-reverse;
+}
+
+.manager_nav li a{
+  color:#F5ECE6;
+}
+
+.material-icons.md-36 { 
+  font-size: 25px;
+  line-height: inherit;
+  padding: 0px 0px 0px 40px;
+}
+
+/*바꿔야 할 부분 (폼)*/
+.saveform-box{
+  display: inline-block;
+  margin: 80px 146px 80px 146px;
+  color: #C53709;
+}
+
+.manager_title {
+  font-size:50px;
+  margin-bottom: 50px;
+}
+
+.saveform {
+  /* overflow-y: hidden; */
+  font-size: 16px;
+  width:1017px;
+  position: relative;
+}
+
+.insert_form{
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+  margin-bottom: 12px;
+  height: 40px;
+
+}
+.insert_form_name {
+  height: 100%;
+  background-color:#C53709;
+  width: 100px;
+  text-align: center;
+}
+
+.insert_input{
+  flex: 1 1 auto;
+  background: transparent;
+  border: 2px solid #C53709;
+  color: #C53709;
+  text-align: left;
+  padding-left: 20px;
+  font-size: 15px;
+}
+
+.insert_input option{
+  text-align: left;
+  color: #C53709;
+}
+
+.insert_input::placeholder{
+  color: #C53709;
+}
+
+.insert_text {
+  color: #F5ECE6;
+  line-height: 40px;
+}
+
+#insert_caf {
+  width: 220px;
+}
+.insert_ch {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+#insert_eff{
+  border: 0px;
+  line-height: 40px;
+  text-align: left;
+  padding-left: 20px;
+  font-size: 18px;
+}
+
+/*버튼*/
+.btn{
+  width: 160px;
+  font-size: 20px;
+  background-color: #C53709;
+  color: #F5ECE6;
+  border: 0px;
+  position: absolute;
+  right: 0px;
+  padding: 7px;
+  cursor: pointer;
+  /* 버튼 클릭 막는 이미지 효과 */
+  opacity: 30%;
+}
+ 
+.teainput2{
+  margin-top: 60px;
+  margin-bottom: 20px;
+}
+
+/* 체크박스 버튼 꾸미기 */
+input[type="checkbox"] {
+  display:none;
+}
+
+input[type="checkbox"] + label span {
+  display:inline-block;
+  width:15px;
+  height:15px;
+  margin:-5px 5px 0 10px;
+  vertical-align:middle;
+  background-color:transparent;
+  cursor:pointer;
+  border: 1.09px solid #C53709;
+  border-radius: 1px;
+}
+
+input[type="checkbox"]:checked + label span {
+  background-color: #C53709;
+  border: none;
+}
+
+@media all and (max-width:1000px){
+  body {
+    height: 100%;
+  }
+
+ .left_side {
+   width: 100px;
+   border: none;
+ }
+
+.left_middle{
+  display: none;
+}
+ .right_bottom{
+   display: none;
+ }
+
+ .manager_nav{
+  padding-right:40px;
+  }
+
+ .saveform-box{
+  display: inline-block;
+  margin: 50px 20px 0px -75px;
+}
+  .right_middle{
+    border: none;
+  }
+
+  .saveform {
+    width:93%;
+    
+  }
+ .teainput1{
+   margin-bottom: 150px;
+ }
+
+
+  .insert_form{
+    display: block;
+    margin-bottom: 50px;
+  }
+
+  .btn{
+    margin-top: 20px;
+  }
+  
+  .insert_input{
+    width: 100%;
+    height: inherit;
+  }
+
+  #insert_eff{
+    padding-left: 5px;
+    border: 2px solid #C53709;
+    overflow: auto;
+  }
+}

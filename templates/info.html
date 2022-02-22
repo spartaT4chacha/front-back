@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 페이지 이름 -->
+    <title>My info | Chacha</title>
+    <!-- 파비콘 -->
+    <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <link rel="stylesheet" href="../static/info.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Noto+Serif+KR:wght@500&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- slick -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <!--login js import -->
+    <script src="../static/js/sign.js"></script>
+</head>
+
+
+<script>
+
+    let isLogin = false;
+    isLogin = await sign_checkSign();
+    $(document).ready(function () {
+        signStatus();
+        if (isLogin) {
+            let nickname = async function sign_getNickname() {
+                // 서버에 없어용
+                let nickname = await fetch('/sign/getNickname')
+                    .then(result => result.json())
+                    .then(result => result['nickname'])
+                return nickname
+            }
+
+            $('.insert_text').append(nickname);
+            // 로그인 아이디 물어보기!!!
+
+        } else {
+            // 로그인 페이지로 이동하기!!
+            location.href = "./login";
+
+        }
+
+    });
+
+
+    $('.post-wrapper').slick({
+        // 한번에 보여지는 카드 수
+        slidesToShow: 4,
+        // 한번에 넘길 카드 수
+        slidesToScroll: 1,
+        // 자동 재생
+        autoplay: true,
+        // 자동 넘기는 속도
+        autoplaySpeed: 2000,
+        // 버튼 안보이게
+        nextArrow: $('.next'),
+        prevArrow: $('.prev'),
+    });
+</script>
+
+<body>
+<!-- 왼쪽 -->
+<div class="left_side">
+    <div class="left_top">
+        <a href="./index.html">차茶</a>
+    </div>
+    <div class="left_middle">
+        <div class="big_Title">
+            <!-- 페이지 용도에 맞춰서 수정 필요-->
+            <p style="color:#C53709; text-align: left; padding-left: 20px;">My<br>Information</p>
+        </div>
+    </div>
+    <div class="left_bottom">
+    </div>
+</div>
+<!-- 오른쪽 -->
+<div class="right_side">
+    <div class="right_top">
+        <ul class="manager_nav" id="right_nav">
+            <li class="right_nav-item1">
+                <a href="#"><span class="material-icons md-36">&#xE87C;</span></a>
+            </li>
+            <li class="right_nav-item2">
+                <a href="./login.html">로그아웃</a>
+            </li>
+        </ul>
+    </div>
+    <div class="right_middle">
+
+        <!-- 제목 부분 -->
+        <div class="saveform-box">
+            <div class="information_title">
+                <p style="text-align: left;">My Information</p>
+            </div>
+
+            <div class="saveform">
+                <div class='info1'>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <span class="insert_text">이름</span>
+                        </div>
+                        <!-- 사용자 이름 -->
+                        <p class="insert_input" id="userName" style="color: #777; font-weight: lighter;">user name</p>
+                    </div>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <!-- 사용자 이메일 -->
+                            <span class="insert_text">이메일</span>
+                        </div>
+                        <p class="insert_input" id="userEmail" style="color: #777; font-weight: lighter;">user email</p>
+                    </div>
+                </div>
+                <a href="info_edit.html">
+                    <button class="btn"><span style="font-size: 18px;">회원정보 수정</span></button>
+                </a>
+
+                <div class='info2'>
+                    <div class="small_title" style="margin-bottom: 10px;">
+                        <span>| </span>
+                        <span style="font-size: 30px; font-weight: bold;">zzim</span> <span
+                            style="font-size: 23px;">💘</span>
+                        <a href="./tea_list.html" class="zzim-button"><span style="font-size: 15px;">더보기</span></a>
+                    </div>
+                    <hr width="1017" color="#C53709;" size="2px">
+                    <div style="position:relative;">
+                        <!--page slider -->
+                        <div class="post-slider">
+                            <div class="post-wrapper">
+                                <div class="post">
+                                    <img style="display: inline-block;"
+                                         src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/%EB%85%B9%EC%B0%A8_Green+Tea/%EB%85%B9_%EB%8C%80%EC%9E%91%EC%B0%A8.png"
+                                         class="slider-image">
+                                    <p>보성녹차</p>
+                                </div>
+                                <div class="post">
+                                    <img style="display: inline-block;"
+                                         src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/%EB%85%B9%EC%B0%A8_Green+Tea/%EB%85%B9_%EB%8C%80%EC%9E%91%EC%B0%A8.png"
+                                         class="slider-image">
+                                    <p>보성녹차</p>
+                                </div>
+                                <div class="post">
+                                    <img style="display: inline-block;"
+                                         src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/%EB%85%B9%EC%B0%A8_Green+Tea/%EB%85%B9_%EB%8C%80%EC%9E%91%EC%B0%A8.png"
+                                         class="slider-image">
+                                    <p>보성녹차</p>
+                                </div>
+                                <div class="post">
+                                    <img style="display: inline-block;"
+                                         src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/%EB%85%B9%EC%B0%A8_Green+Tea/%EB%85%B9_%EB%8C%80%EC%9E%91%EC%B0%A8.png"
+                                         class="slider-image">
+                                    <p>보성녹차</p>
+                                </div>
+                                <div class="post">
+                                    <img style="display: inline-block;"
+                                         src="https://s3.ap-northeast-2.amazonaws.com/alphafly.shop/tea_image/%EB%85%B9%EC%B0%A8_Green+Tea/%EB%85%B9_%EB%8C%80%EC%9E%91%EC%B0%A8.png"
+                                         class="slider-image">
+                                    <p>보성녹차</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right_bottom"></div>
+</div>
+</body>
+
+
+</html>

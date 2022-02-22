@@ -1,0 +1,234 @@
+* {
+  list-style: none;
+  text-decoration: none;
+  border-collapse: collapse;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+body {
+  background: #F9F1DD;
+  /* color: #f9f1dd; */
+  margin: 0px;
+  padding: 0px;
+}
+
+/* 네비게이션 */
+.nav_container{
+   background-color: #017258;
+     height: 56px;
+}
+
+.navigation{
+  padding: 0px 60px 0px 60px;
+  overflow: hidden;
+    margin-top : 0px;
+}
+li{
+  display: inline;
+  float: left;
+}
+.navi {
+  color: #f9f1dd;
+  font-size: 20px;
+  line-height: 55px;
+  margin-left: 20px;
+  margin-right: 20px;
+  font-family: 'Noto Serif KR', serif;
+}
+
+.nav_login {
+  margin-right: 40px;
+}
+
+.login_title {
+  font-size: 36px;
+  text-align: center;
+  color: #017258;
+  margin-bottom: 30px;
+  font-weight: normal;
+  margin-top: 150px;
+  font-weight: 600;
+}
+.signup-title{
+  font-size: 36px;
+  text-align: center;
+  color: #017258;
+  margin-bottom: 50px;
+  font-weight: 600;
+}
+
+.login-form .social-icon {
+    width: 100%;
+    font-size: 20px;
+    padding-top: 20px;
+    color: #fff;
+    text-align: center;
+    float: left;
+}
+
+
+.login-form {
+    background:#f9f1dd;
+    width: 450px;
+    border-radius: 6px;
+    margin: 0 auto;
+    display: table;
+    padding: 15px 30px 30px;
+    box-sizing: border-box;
+    /* margin-top: 120px; */
+}
+
+.form-group {
+  float: left;
+  width: 100%;
+  margin: 0 0 15px;
+  position: relative;
+}
+.login-form input {
+    width: 100%;
+    padding: 5px;
+    height: 56px;
+    border-radius: 74px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 15px;
+    padding-left: 75px;
+}
+.login-form .form-group .input-icon {
+    font-size: 15px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    border-radius: 25px;
+    bottom: 0;
+    height: 100%;
+    padding-left: 35px;
+    color: #666;
+}
+.login-form .login-btn {
+  background: #017258;
+  padding: 11px 50px;
+  border-color: #017258;
+  color: #fff;
+  text-align: center;
+  margin: 0 auto;
+  font-size: 20px;
+  border: 1px solid #017258;
+  border-radius: 44px;
+  width: 100%;
+  height: 56px;
+  cursor: pointer;
+}
+.login-form .reset-psw {
+  float: left;
+  width: 100%;
+  text-decoration: none;
+  color: #017258;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 11px;
+}
+.login-form .social-icon button {
+    font-size: 20px;
+    color: #f9f1dd;
+    height: 50px;
+    width: 50px;
+    background: #017258;
+    border-radius: 60%;
+    margin: 0px 10px;
+    border: none;
+    cursor: pointer;
+}
+.login-form button:hover{
+  opacity: 0.9;
+}
+.login-form .seperator {
+  float: left;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  text-align: center;
+  margin: 50px 0 0;
+}
+.login-form .seperator b {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 37px;
+  background: #fff;
+  display: inline-block;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  position: relative;
+  top: -22px;
+  z-index: 1;
+}
+.login-form p {
+  float: left;
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+
+.login_inform, .seperator{
+  color:#888;
+}
+
+@media screen and (max-width:767px) {
+.login-form {
+    width: 90%;
+    padding: 15px 15px 30px;
+}
+}
+
+.modal{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    top:0;
+    left:0;
+    display: none;
+}
+
+.modal_content{
+  width:600px; height:530px;
+  background:#f9f1dd; border-radius:10px;
+  position:relative; top:50%; left:50%;
+  margin-top:-230px;
+  margin-left:-300px;
+  text-align:center;
+  box-sizing:border-box;
+  padding:50px 0;
+  line-height:23px;
+  z-index: 2;
+}
+
+.exit-button{
+    /* display: inline; */
+    font-size: 25px;
+    width: 1075px;
+    color: #017258;
+    cursor:pointer;
+}
+
+.sign-up{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px;
+
+  /* display: none; */
+}
+
+.check-pw{
+float: right;
+}

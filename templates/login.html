@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Sign Up | Chacha</title>
+    <link rel="stylesheet" href="../static/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- 이미지 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap"
+          rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a73607bda8.js" crossorigin="anonymous"></script>
+    <!-- JQuery를 import 합니다 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 이모티콘 추가 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- sign file import -->
+    <script src="../static/js/sign.js"></script>
+
+    <!-- 파비콘 -->
+    <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <script>
+
+
+        $(function () {
+            $("a").click(function () {
+                $(".modal").fadeIn();
+                $(".sign-up").prop("disabled", true);
+
+            });
+            $(".exit-button").click(function () {
+                $(".modal").fadeOut();
+            });
+        })
+
+        //  signin&out
+        let isLogin = false;
+
+
+        $(document).ready(function () {
+            signStatus();
+            if (isLogin) {
+                // 홈화면으로 이동하기!!!!!!!!
+                var loginText = "로그아웃";
+
+            } else {
+                loginText = "로그인";
+            }
+            $("#loginText").text(loginText);
+        });
+
+        //  Check ID
+
+        function check_pw() {
+            var pw = $("[name = psw]").val();
+            var check_pw = $("[name=psw_check]").val();
+            var SC = ["!", "@", "#", "$", "%", "^", "&", "*"];
+            var check = 0;
+            for (var i = 0; i < SC.length; i++) {
+                if (pw.indexOf(SC[i]) != -1) {
+                    check = 1;
+                    break;
+                }
+            }
+            if (pw.length < 6 || pw.length > 17) {
+                window.alert('비밀번호는 6글자 이상, 16글자 이하만 이용 가능합니다.');
+                $(".sign-up").prop("disabled", true);
+
+            } else if (check == 0) {
+                window.alert('!,@,#,$,% 의 특수문자가 들어가 있지 않습니다.')
+                $(".sign-up").prop("disabled", true);
+
+
+            } else {
+                if (pw == check_pw) {
+                    $(".check-pw").html("correct");
+                    $(".check-pw").css("color", "blue");
+                    // $(".sing-up").fadeIn();
+                    $(".sign-up").prop("disabled", false);
+
+                } else {
+                    $(".check-pw").html("wrong");
+                    $(".check-pw").css("color", "red");
+                    $(".sign-up").prop("disabled", true);
+
+                }
+            }
+        }
+
+        let isPassibleID = false;
+
+        function changeID() {
+            isPassibleID = false;
+            $('#checkIDText').text('중복확인해주세요');
+        }
+
+        async function checkID() {
+            let id = $('#signup_id').val();
+
+            let result = await sign_checkID(id);
+
+            if (result['success']) {
+                isPassibleID = true;
+                alert(result['success']);
+                $('#checkIDText').text('중복확인완료');
+            } else alert(result['fail'])
+        }
+
+        //  Check nickname
+        let isPassibleNickname = false;
+
+        function changeNickname() {
+            isPassibleNickname = false;
+            $('#checkNicknameText').text('중복확인해주세요');
+        }
+
+        async function checkNickname() {
+
+            let nickname = $('#signup_nick').val();
+
+            let result = await sign_checkNickname(nickname);
+            if (result['success']) {
+                isPassibleNickname = true;
+                alert(result['success']);
+                $('#checkNicknameText').text('중복확인완료');
+            } else alert(result['fail']);
+        }
+
+        //  signup
+        async function test_signup() {
+
+            if (isPassibleID && isPassibleNickname) {
+
+                let id = $('#signup_id').val();
+                let pass = $('#signup_pass').val();
+                let nickname = $('#signup_nick').val();
+
+                let response = await sign_signup(id, pass, nickname)
+
+                if (response) {
+                    alert(response['success']);
+                    window.location.reload();
+                } else alert('가입실패');
+
+            } else {
+                alert('ID와 별명 중복확인 바랍니다.');
+            }
+
+        }
+
+        async function signStatus() {
+            isLogin = await sign_checkSign();
+            if (isLogin) signin_mode();
+            else signout_mode();
+        }
+
+        async function signinout() {
+            if (isLogin) {
+                signout_mode();
+            } else {
+                let id = $('#signin_id').val();
+                let pass = $('#signin_pass').val();
+
+                let result = await sign_signin(id, pass)
+                if (result) {
+                    if (result['success']) {
+                        alert(result['success']);
+                        window.location.replace('/');
+                    } else if (result['fail']) alert(result['fail'])
+                } else alert('서버연결실패')
+            }
+        }
+
+        function signin_mode() {
+            isLogin = true;
+            $('#signupPage').hide();
+            $('#signinPage').hide();
+            $('#signinoutBtn').text('로그아웃');
+        }
+
+        function signout_mode() {
+            isLogin = false;
+            $('#signupPage').show();
+            $('#signinPage').show();
+            $('#signinoutBtn').text('로그인');
+            sign_signout();
+        }
+
+        //  비밀번호변경
+        let isPassiblePassword = false;
+
+        function check_change_password() {
+            isPassiblePassword = false;
+
+            let new_pass = $('#new_pass').val();
+            let new_pass_check = $('#new_pass_check').val();
+
+            if (new_pass === new_pass_check) {
+                isPassiblePassword = true;
+                $('#checkPasswordText').text('새로운 비밀번호 확인 완료')
+            } else {
+                $('#checkPasswordText').text('새로운 비밀번호를 확인해 주세요.')
+            }
+        }
+
+        async function test_change_pass() {
+            if (isPassiblePassword) {
+                let current_pass = $('#current_pass').val();
+                let new_pass = $('#new_pass').val();
+
+                let response = await sign_changePassword(current_pass, new_pass);
+
+                if (response['success']) {
+                    alert(response['success']);
+                    signout_mode();
+                    window.location.reload();
+                } else if (response['fail']) {
+                    alert(response['fail']);
+                }
+            } else {
+                alert('새로운 비밀번호를 확인해 주세요.')
+            }
+
+        }
+
+        //  회원탈퇴
+        async function test_delete_user() {
+            let password = $('#user_pass').val();
+            console.log(password)
+
+            let response = await sign_delete(password);
+            console.log(response)
+
+            if (response['success']) {
+                alert(response['success']);
+                signout_mode();
+            } else if (response['fail']) alert(response['fail']);
+        }
+
+        //  관리자 확인
+        let isAdmin = false;
+
+        async function checkAdmin() {
+            isAdmin = await sign_checkAdmin();
+            alert(isAdmin);
+        }
+
+
+    </script>
+</head>
+
+<body>
+<div class="nav_container">
+    <ul class="navigation">
+        <li><a href="./" class="navi">차茶</a></li>
+        <li style="float:right">
+            <a class="navi" href="./info"><span class="material-icons md-36"
+                                                style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+        <li style="float:right">
+            <a class="navi nav_login" href="./login" id="loginText" onclick="signinout()"></a>
+    </ul>
+</div>
+
+
+<!-- 로그인 하기 -->
+<div class="login-form">
+    <form>
+        <div class="login_title">Login</div>
+        <div class="form-group">
+            <input type="text" id="signin_id" placeholder="email">
+            <span class="input-icon"><i class="fas fa-user"></i></span>
+        </div>
+        <div class="form-group">
+            <input type="password" id="signin_pass" placeholder="Password">
+            <span class="input-icon"><i class="fa fa-lock"></i></span>
+        </div>
+        <button class="login-btn" onclick="signinout()">Login</button>
+        <a class="reset-psw" href="#">회원가입</a>
+        <div class="seperator"><b>or</b></div>
+        <p class="login_inform">Sign in with your social media account</p>
+        <!-- Social login buttons -->
+        <div class="social-icon">
+            <button type="button"><i class="fa fa-twitter"></i></button>
+            <button type="button"><i class="fa fa-facebook"></i></button>
+        </div>
+    </form>
+</div>
+
+<!-- 회원가입 디자인 -->
+<div class="modal">
+    <div class="modal_content">
+        <!-- 나가기 버튼 -->
+        <div class="exit-button">
+            <i class="fa-solid fa-circle-xmark"></i>
+        </div>
+        <!-- 양식  -->
+        <div class="login-form">
+            <div class="signup-title">Sing Up</div>
+            <div class="form-group">
+                <input id="signup_id" type="email" name="email" placeholder="E-mail Address" onchange="checkID()">
+                <span class="input-icon"><i class="fa fa-envelope"></i></span>
+            </div>
+            <div class="form-group">
+                <input id="signup_nick" type="text" name="nickname" placeholder="Nickname" onchange="checkNickname()">
+                <span class="input-icon"><i class="fas fa-user"></i></span>
+            </div>
+            <div class="form-group">
+                <input type="password" name="psw" placeholder="특수문자 포함 6~15 글자로 입력 바랍니다." onchange="check_pw()">
+                <span class="input-icon"><i class="fa-solid fa-unlock"></i></span>
+            </div>
+            <div class="form-group">
+                <input type="password" id="signup_pass" name="psw_check" placeholder="Password" onchange="check_pw()">
+                <span class="input-icon"><i class="fa fa-lock"></i></span>
+                <span class="check-pw"></span>
+            </div>
+
+            <button type="button" class="sign-up" onclick="test_signup()"><i class="fa-solid fa-user-plus"></i></button>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
