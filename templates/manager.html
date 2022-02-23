@@ -2,252 +2,412 @@
 <html lang="ko">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- 페이지 이름 -->
-  <title>Manager page | Chacha</title>
-  <!-- 파피콘 -->
-  <link rel="shortcut icon" href="icon/favicon.ico" type="image/x-icon">
-  <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 페이지 이름 -->
+    <title>Manager page | Chacha</title>
+    <!-- 파피콘 -->
+    <link rel="shortcut icon" href="icon/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
 
-  <!-- jQuery 사용하기 -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- jQuery 사용하기 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
-  <link rel="stylesheet" href="../static/manager.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap"
-    rel="stylesheet">
+    <link rel="stylesheet" href="../static/manager.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500&family=Noto+Sans+KR&family=Noto+Serif+KR&display=swap"
+          rel="stylesheet">
 
-  <!-- 파비콘 -->
-  <link rel="shortcut icon" type="image/x-icon" sizes="16x16"  href="../static/icon/favicon.ico">
-   <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
-   <meta name="msapplication-TileColor" content="#ffffff">
-   <meta name="theme-color" content="#ffffff">
+    <!-- 파비콘 -->
+    <link rel="shortcut icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="../static/icon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- sign file import -->
+    <script src="../static/js/sign.js"></script>
 
 </head>
 
 <script>
-  //  등록하기 속성값들 확인하기
-  function check_tea() {
-    // console.log('click!')
-    var name = $("#name").val();
-    var type = $("#type option:selected").val();
-    var eng_name = $("#eng_type option:selected").val();
-    // 선택 값들 배열의 원소로 집엉넣은 후 ' '띄어쓰기로 연결된 문자열로 생성하기.
-    var benefit = new Array;
-    $("input[name = benefit]:checked").each(function () {
-      benefit.push($(this).val());
-    });
-    benefit = benefit.join(' ')
+    //  등록하기 속성값들 확인하기
+    function check_tea() {
+        // console.log('click!')
+        var name = $("#name").val();
+        var type = $("#type option:selected").val();
+        var eng_name = $("#eng_type option:selected").val();
+        // 선택 값들 배열의 원소로 집엉넣은 후 ' '띄어쓰기로 연결된 문자열로 생성하기.
+        var benefit = new Array;
+        $("input[name = benefit]:checked").each(function () {
+            benefit.push($(this).val());
+        });
+        benefit = benefit.join(' ')
 
-    var benefitdetail = $("#benefitdetail").val();
-    var caffeine = $("#caffeine").val();
-    var des = $("#desc").val();
-    var caution = $("#caution").val();
-    var img = $("#img").val();
+        var benefitdetail = $("#benefitdetail").val();
+        var caffeine = $("#caffeine").val();
+        var des = $("#desc").val();
+        var caution = $("#caution").val();
+        var img = $("#img").val();
 
-    // console.log(name, type, eng_name, caffeine, des, caution, img, benefit);
-    // 모든 항목이 존재하면 opacity값 100으로 설정하고 버튼 활성화 시키기.
-    if (name && type && eng_name && benefit && benefitdetail && caffeine && des && caution && img) {
-      $(".btn").attr("disabled", false);
-      $(".btn").css("opacity", "100%");
+        // console.log(name, type, eng_name, caffeine, des, caution, img, benefit);
+        // 모든 항목이 존재하면 opacity값 100으로 설정하고 버튼 활성화 시키기.
+        if (name && type && eng_name && benefit && benefitdetail && caffeine && des && caution && img) {
+            $(".btn").attr("disabled", false);
+            $(".btn").css("opacity", "100%");
+        }
+        // 그렇지 않다면 opcity 30% 설정하고 버튼 비활성화 시키기.
+        else {
+            $(".btn").css("opacity", "30%");
+            $(".btn").attr("disabled", true);
+
+
+        }
+
     }
-    // 그렇지 않다면 opcity 30% 설정하고 버튼 비활성화 시키기.
-    else {
-      $(".btn").css("opacity", "30%");
-      $(".btn").attr("disabled", true);
 
+    function save_tea() {
+        var name = $("#name").val();
+        var type = $("#type option:selected").val();
+        var eng_type = $("#eng_type option:selected").val();
+        // 선택 값들 배열의 원소로 집엉넣은 후 ' '띄어쓰기로 연결된 문자열로 생성하기.
+        var benefit = new Array;
+        $("input[name = benefit]:checked").each(function () {
+            benefit.push($(this).val());
+        });
+        benefit = benefit.join(' ')
+
+        var benefitdetail = $("#benefitdetail").val();
+
+        var caffeine = $("#caffeine").val();
+        var desc = $("#desc").val();
+        var caution = $("#caution").val();
+        var img = $("#img").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/save",
+            headers: {'Content-Type': 'application/json'},
+            dataType: 'json',
+            data: JSON.stringify({
+                name_give: name,
+                type_give: type,
+                eng_type_give: eng_type,
+                benefit_give: benefit,
+                benefitdetail_give: benefitdetail,
+                caffeineOX_give: Boolean(caffeine),
+                caffeine_give: caffeine,
+                desc_give: desc,
+                caution_give: caution,
+                img_give: img,
+            }),
+            success: function (response) { // 성공하면
+                alert(response["msg"]);
+                window.location.reload()
+            }
+        })
 
     }
 
-  }
-  function save_tea() {
-    var name = $("#name").val();
-    var type = $("#type option:selected").val();
-    var eng_type = $("#eng_type option:selected").val();
-    // 선택 값들 배열의 원소로 집엉넣은 후 ' '띄어쓰기로 연결된 문자열로 생성하기.
-    var benefit = new Array;
-    $("input[name = benefit]:checked").each(function () {
-      benefit.push($(this).val());
+    let isLogin = false;
+    $(document).ready(async function () {
+        await signStatus();
+        if (isLogin) {
+            // 홈화면으로 이동하기!!!!!!!!
+            login_Text = "로그아웃";
+        } else {
+            login_Text = "로그인";
+        }
+        $("#loginText").text(login_Text);
     });
-    benefit = benefit.join(' ')
 
-    var benefitdetail = $("#benefitdetail").val();
+    function signin_mode() {
+        isLogin = true;
+        $('#signupPage').hide();
+        $('#signinPage').hide();
+        $('#signinoutBtn').text('로그아웃');
+    }
 
-    var caffeine = $("#caffeine").val();
-    var desc = $("#desc").val();
-    var caution = $("#caution").val();
-    var img = $("#img").val();
+    function signout_mode() {
+        isLogin = false;
+        $('#signupPage').show();
+        $('#signinPage').show();
+        $('#signinoutBtn').text('로그인');
+        sign_signout();
+    }
 
-    $.ajax({
-      type: "POST",
-      url: "/save",
-      headers: { 'Content-Type': 'application/json' },
-      dataType: 'json',
-      data: JSON.stringify({
-        name_give: name,
-        type_give: type,
-        eng_type_give: eng_type,
-        benefit_give: benefit,
-        benefitdetail_give: benefitdetail,
-        caffeineOX_give: Boolean(caffeine),
-        caffeine_give: caffeine,
-        desc_give: desc,
-        caution_give: caution,
-        img_give: img,
-      }),
-      success: function (response) { // 성공하면
-        alert(response["msg"]);
-        window.location.reload()
-      }
-    })
+    //  Check ID
 
-  }
+    function check_pw() {
+        var pw = $("[name = psw]").val();
+        var check_pw = $("[name=psw_check]").val();
+        var SC = ["!", "@", "#", "$", "%", "^", "&", "*"];
+        var check = 0;
+        for (var i = 0; i < SC.length; i++) {
+            if (pw.indexOf(SC[i]) != -1) {
+                check = 1;
+                break;
+            }
+        }
+        if (pw.length < 6 || pw.length > 17) {
+            window.alert('비밀번호는 6글자 이상, 16글자 이하만 이용 가능합니다.');
+            $(".sign-up").prop("disabled", true);
 
+        } else if (check == 0) {
+            window.alert('!,@,#,$,% 의 특수문자가 들어가 있지 않습니다.')
+            $(".sign-up").prop("disabled", true);
+
+
+        } else {
+            if (pw == check_pw) {
+                $(".check-pw").html("correct");
+                $(".check-pw").css("color", "blue");
+                // $(".sing-up").fadeIn();
+                $(".sign-up").prop("disabled", false);
+
+            } else {
+                $(".check-pw").html("wrong");
+                $(".check-pw").css("color", "red");
+                $(".sign-up").prop("disabled", true);
+
+            }
+        }
+    }
+
+    let isPassibleID = false;
+
+    function changeID() {
+        isPassibleID = false;
+        $('#checkIDText').text('중복확인해주세요');
+    }
+
+    async function checkID() {
+        let id = $('#signup_id').val();
+
+        let result = await sign_checkID(id);
+
+        if (result['success']) {
+            isPassibleID = true;
+            alert(result['success']);
+            $('#checkIDText').text('중복확인완료');
+        } else alert(result['fail'])
+    }
+
+    //  Check nickname
+    let isPassibleNickname = false;
+
+    function changeNickname() {
+        isPassibleNickname = false;
+        $('#checkNicknameText').text('중복확인해주세요');
+    }
+
+    async function checkNickname() {
+
+        let nickname = $('#signup_nick').val();
+
+        let result = await sign_checkNickname(nickname);
+        if (result['success']) {
+            isPassibleNickname = true;
+            alert(result['success']);
+            $('#checkNicknameText').text('중복확인완료');
+        } else alert(result['fail']);
+    }
+
+    //  signup
+    async function test_signup() {
+
+        if (isPassibleID && isPassibleNickname) {
+
+            let id = $('#signup_id').val();
+            let pass = $('#signup_pass').val();
+            let nickname = $('#signup_nick').val();
+
+            let response = await sign_signup(id, pass, nickname)
+
+            if (response) {
+                alert(response['success']);
+                window.location.reload();
+            } else alert('가입실패');
+
+        } else {
+            alert('ID와 별명 중복확인 바랍니다.');
+        }
+
+    }
+
+    async function signStatus() {
+        isLogin = await sign_checkSign();
+        if (isLogin) signin_mode();
+        else signout_mode();
+    }
+
+    //  관리자 확인
+    let isAdmin = false;
+
+    async function signinout() {
+        if (isLogin) {
+            signout_mode();
+        } else {
+            let id = $('#signin_id').val();
+            let pass = $('#signin_pass').val();
+
+            let result = await sign_signin(id, pass)
+            console.log(result);
+            if (result) {
+                if (result['success']) {
+                    alert(result['success']);
+                    isAdmin = await sign_checkAdmin();
+                    if (isAdmin) window.location.replace('/manager');
+                    else window.location.replace('/');
+                } else if (result['fail']) alert(result['fail'])
+            } else alert('서버연결실패')
+        }
+    }
 
 </script>
 
 <body>
-  <!-- 왼쪽 -->
-  <div class="left_side">
+<!-- 왼쪽 -->
+<div class="left_side">
     <div class="left_top">
-      <a href="./">차茶</a>
+        <a>차茶</a>
     </div>
     <div class="left_middle">
-      <div class="big_Title">
-        <!-- 페이지 용도에 맞춰서 수정 필요-->
-        <p style="color:#C53709; text-align: left; padding-left: 20px;">Manager<br>Page</p>
-      </div>
+        <div class="big_Title">
+            <!-- 페이지 용도에 맞춰서 수정 필요-->
+            <p style="color:#C53709; text-align: left; padding-left: 20px;">Manager<br>Page</p>
+        </div>
     </div>
     <div class="left_bottom">
     </div>
-  </div>
-  <!-- 오른쪽 -->
-  <div class="right_side">
+</div>
+<!-- 오른쪽 -->
+<div class="right_side">
     <div class="right_top">
-      <ul class="manager_nav" id="right_nav">
-        <li class="right_nav-item1">
-          <a href="./info"><span class="material-icons md-36">&#xE87C;</span></a>
-        </li>
-        <li class="right_nav-item2">
-          <a href="./login">로그아웃</a>
-        </li>
-      </ul>
+        <ul class="manager_nav" id="right_nav">
+            <li class="right_nav-item1">
+                <a><span class="material-icons md-36">&#xE87C;</span></a>
+            </li>
+            <li class="right_nav-item2">
+                <a href="/" onclick="signinout()">로그아웃</a>
+            </li>
+        </ul>
     </div>
     <div class="right_middle">
 
-      <!-- 제목 부분 -->
-      <div class="saveform-box">
-        <div class="manager_title">
-          <p style="text-align: left;">Insert Tea Information</p>
-        </div>
+        <!-- 제목 부분 -->
+        <div class="saveform-box">
+            <div class="manager_title">
+                <p style="text-align: left;">Insert Tea Information</p>
+            </div>
 
-        <div class="saveform">
-          <div class='teainput1'>
-            <div class="insert_form">
-              <div class="insert_form_name">
-                <span class="insert_text">차 이름</span>
-              </div>
-              <input class="insert_input" id="name" type="text" onchange="check_tea()" />
-            </div>
-            <div>
-              <div class="insert_form nd_input">
-                <div class="insert_form_name">
-                  <span class="insert_text">차 분류</span>
-                </div>
-                <select class="insert_input" id="type">
-                  <option value="">-- 이 차의 분류는? --</option>
-                  <option value="백차">백차</option>
-                  <option value="녹차">녹차</option>
-                  <option value="청차">청차</option>
-                  <option value="황차">황차</option>
-                  <option value="홍차">홍차</option>
-                  <option value="흑차">흑차</option>
-                  <option value="기타">기타</option>
-                </select>
-              </div>
-              <div class="insert_form">
-                <div class="insert_form_name">
-                  <span class="insert_text">영문명</span>
-                </div>
-                <select class="insert_input" id="eng_type">
-                  <option value=""> </option>
-                  <option value="white tea">white tea</option>
-                  <option value="dark green tea">dark green tea</option>
-                  <option value="oolong tea">oolong tea</option>
-                  <option value="yellow tea">yellow tea</option>
-                  <option value="black tea">black tea</option>
-                  <option value="dark tea">dark tea</option>
-                  <option value="etc">etc</option>
-                </select>
-              </div>
+            <div class="saveform">
+                <div class='teainput1'>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <span class="insert_text">차 이름</span>
+                        </div>
+                        <input class="insert_input" id="name" type="text" onchange="check_tea()"/>
+                    </div>
+                    <div>
+                        <div class="insert_form nd_input">
+                            <div class="insert_form_name">
+                                <span class="insert_text">차 분류</span>
+                            </div>
+                            <select class="insert_input" id="type">
+                                <option value="">-- 이 차의 분류는? --</option>
+                                <option value="백차">백차</option>
+                                <option value="녹차">녹차</option>
+                                <option value="청차">청차</option>
+                                <option value="황차">황차</option>
+                                <option value="홍차">홍차</option>
+                                <option value="흑차">흑차</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </div>
+                        <div class="insert_form">
+                            <div class="insert_form_name">
+                                <span class="insert_text">영문명</span>
+                            </div>
+                            <select class="insert_input" id="eng_type">
+                                <option value=""></option>
+                                <option value="white tea">white tea</option>
+                                <option value="dark green tea">dark green tea</option>
+                                <option value="oolong tea">oolong tea</option>
+                                <option value="yellow tea">yellow tea</option>
+                                <option value="black tea">black tea</option>
+                                <option value="dark tea">dark tea</option>
+                                <option value="etc">etc</option>
+                            </select>
+                        </div>
 
+                    </div>
+                    <div id="form_mg_tea_benefit" class="insert_form">
+                        <div class="insert_form_name">
+                            <span class="insert_text">효능(복수)</span>
+                        </div>
+                        <div class="insert_input" id="insert_eff">
+                            <input class="insert_ch" type='checkbox' name='benefit' value='다이어트' id="ef_diet"/>
+                            <label for="ef_diet"><span></span>다이어트</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='피부미용' id="ef_care"/>
+                            <label for="ef_care"><span></span>피부미용</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='피로회복' id="ef_recv"/>
+                            <label for="ef_recv"><span></span>피로회복</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='면역증진' id="ef_imm"/>
+                            <label for="ef_imm"><span></span>면역증진</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='혈액순환' id="ef_cycle"/>
+                            <label for="ef_cycle"><span></span>혈액순환</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='소화기능' id="ef_dige"/>
+                            <label for="ef_dige"><span></span>소화기능</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='질병예방' id="ef_prev"/>
+                            <label for="ef_prev"><span></span>질병예방</label>
+                            <input class="insert_ch" type='checkbox' name='benefit' value='정신건강' id="ef_mind"/>
+                            <label for="ef_mind"><span></span>정신건강</label>
+                        </div>
+                    </div>
+                </div>
+                <div class='teainput2'>
+                    <div class="insert_form">
+                        <div class="insert_form_name" id="insert_caf">
+                            <span class="insert_text">카페인 함유량(mg/200ml)</span>
+                        </div>
+                        <input class="insert_input" id="caffeine"
+                               placeholder="카페인 함량을 입력하면 “0”(카페인 없음) 또는 “1”(카페인 함유)로 자동 저장됩니다."
+                               type="text" onchange="check_tea()"/>
+                    </div>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <span for="form_mg_tea_name" class="insert_text">상세 효능</span>
+                        </div>
+                        <input class="insert_input" id="benefitdetail" type="text" placeholder="',' 자로 입력해주세요."
+                               onchange="check_tea()"/>
+                    </div>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <span for="form_mg_tea_name" class="insert_text">상세 설명</span>
+                        </div>
+                        <input class="insert_input" id="desc" type="text" onchange="check_tea()"/>
+                    </div>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <span for="form_mg_tea_name" class="insert_text">주의 사항</span>
+                        </div>
+                        <input class="insert_input" id="caution" type="text" onchange="check_tea()"/>
+                    </div>
+                    <div class="insert_form">
+                        <div class="insert_form_name">
+                            <span for="form_mg_tea_name" class="insert_text">이미지 주소</span>
+                        </div>
+                        <input class="insert_input" id="img" type="text" onchange="check_tea()"/>
+                    </div>
+                </div>
+                <button type="button" onclick="save_tea()" class="btn" disabled>등록하기</button>
             </div>
-            <div id="form_mg_tea_benefit" class="insert_form">
-              <div class="insert_form_name">
-                <span class="insert_text">효능(복수)</span>
-              </div>
-              <div class="insert_input" id="insert_eff">
-                <input class="insert_ch" type='checkbox' name='benefit' value='다이어트' id="ef_diet" />
-                <label for="ef_diet"><span></span>다이어트</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='피부미용' id="ef_care" />
-                <label for="ef_care"><span></span>피부미용</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='피로회복' id="ef_recv" />
-                <label for="ef_recv"><span></span>피로회복</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='면역증진' id="ef_imm" />
-                <label for="ef_imm"><span></span>면역증진</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='혈액순환' id="ef_cycle" />
-                <label for="ef_cycle"><span></span>혈액순환</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='소화기능' id="ef_dige" />
-                <label for="ef_dige"><span></span>소화기능</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='질병예방' id="ef_prev" />
-                <label for="ef_prev"><span></span>질병예방</label>
-                <input class="insert_ch" type='checkbox' name='benefit' value='정신건강' id="ef_mind" />
-                <label for="ef_mind"><span></span>정신건강</label>
-              </div>
-            </div>
-          </div>
-          <div class='teainput2'>
-            <div class="insert_form">
-              <div class="insert_form_name" id="insert_caf">
-                <span class="insert_text">카페인 함유량(mg/200ml)</span>
-              </div>
-              <input class="insert_input" id="caffeine" placeholder="카페인 함량을 입력하면 “0”(카페인 없음) 또는 “1”(카페인 함유)로 자동 저장됩니다."
-                type="text" onchange="check_tea()" />
-            </div>
-            <div class="insert_form">
-              <div class="insert_form_name">
-                <span for="form_mg_tea_name" class="insert_text">상세 효능</span>
-              </div>
-              <input class="insert_input" id="benefitdetail" type="text" placeholder = "',' 자로 입력해주세요." onchange="check_tea()" />
-            </div>
-            <div class="insert_form">
-              <div class="insert_form_name">
-                <span for="form_mg_tea_name" class="insert_text">상세 설명</span>
-              </div>
-              <input class="insert_input" id="desc" type="text" onchange="check_tea()" />
-            </div>
-            <div class="insert_form">
-              <div class="insert_form_name">
-                <span for="form_mg_tea_name" class="insert_text">주의 사항</span>
-              </div>
-              <input class="insert_input" id="caution" type="text" onchange="check_tea()" />
-            </div>
-            <div class="insert_form">
-              <div class="insert_form_name">
-                <span for="form_mg_tea_name" class="insert_text">이미지 주소</span>
-              </div>
-              <input class="insert_input" id="img" type="text" onchange="check_tea()" />
-            </div>
-          </div>
-          <button type="button" onclick="save_tea()" class="btn" disabled>등록하기</button>
         </div>
-      </div>
     </div>
     <div class="right_bottom"></div>
-  </div>
+</div>
 </body>
 
 </html>
