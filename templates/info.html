@@ -98,6 +98,7 @@
                         <div class="post-slider">
                             <div class="post-wrapper">
 
+
                             </div>
                         </div>
                     </div>
@@ -196,7 +197,7 @@
                                                    class="slider-image">
                                               <p>${name}</p>
                                           </div>`
-                        $('.post-wrapper').append(temp_html)
+                        $('.post-wrapper').slick('slickAdd',temp_html)
                     }
                 }
             }
