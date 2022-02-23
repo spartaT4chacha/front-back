@@ -540,7 +540,7 @@ def checkAdmin():
 @app.route('/sign_test')
 def sign_page():
     return render_template('login.html')
-
+#git pull용 주석추가
 
 # ***************************************************************************************************
 if __name__ == '__main__':
