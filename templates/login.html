@@ -171,6 +171,9 @@
             else signout_mode();
         }
 
+        //  관리자 확인
+        let isAdmin = false;
+
         async function signinout() {
             if (isLogin) {
                 signout_mode();
@@ -179,72 +182,16 @@
                 let pass = $('#signin_pass').val();
 
                 let result = await sign_signin(id, pass)
+                console.log(result);
                 if (result) {
                     if (result['success']) {
                         alert(result['success']);
-                        window.location.replace('/');
+                        isAdmin = await sign_checkAdmin();
+                        if (isAdmin) window.location.replace('/manager');
+                        else window.location.replace('/');
                     } else if (result['fail']) alert(result['fail'])
                 } else alert('서버연결실패')
             }
-        }
-
-
-        //  비밀번호변경
-        let isPassiblePassword = false;
-
-        function check_change_password() {
-            isPassiblePassword = false;
-
-            let new_pass = $('#new_pass').val();
-            let new_pass_check = $('#new_pass_check').val();
-
-            if (new_pass === new_pass_check) {
-                isPassiblePassword = true;
-                $('#checkPasswordText').text('새로운 비밀번호 확인 완료')
-            } else {
-                $('#checkPasswordText').text('새로운 비밀번호를 확인해 주세요.')
-            }
-        }
-
-        async function test_change_pass() {
-            if (isPassiblePassword) {
-                let current_pass = $('#current_pass').val();
-                let new_pass = $('#new_pass').val();
-
-                let response = await sign_changePassword(current_pass, new_pass);
-
-                if (response['success']) {
-                    alert(response['success']);
-                    signout_mode();
-                    window.location.reload();
-                } else if (response['fail']) {
-                    alert(response['fail']);
-                }
-            } else {
-                alert('새로운 비밀번호를 확인해 주세요.')
-            }
-        }
-
-        //  회원탈퇴
-        async function test_delete_user() {
-            let password = $('#user_pass').val();
-            console.log(password)
-
-            let response = await sign_delete(password);
-            console.log(response)
-
-            if (response['success']) {
-                alert(response['success']);
-                signout_mode();
-            } else if (response['fail']) alert(response['fail']);
-        }
-
-        //  관리자 확인
-        let isAdmin = false;
-
-        async function checkAdmin() {
-            isAdmin = await sign_checkAdmin();
-            alert(isAdmin);
         }
 
 

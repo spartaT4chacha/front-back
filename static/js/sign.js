@@ -146,6 +146,14 @@ async function sign_checkSign() {
 }
 
 // sign information
+async function sign_getID() {
+    let token = await get_access_token();
+    let ID = get_payload(token).split("sub\":\"")[1].split("\"")[0];
+    //console.log(ID);
+    return ID;
+}
+
+// sign information
 async function sign_getNickname() {
     let nickname = await fetch('/sign/getNickname')
         .then(result=>result.json())
@@ -153,7 +161,6 @@ async function sign_getNickname() {
 
     return nickname
 }
-
 async function sign_delete(password) {
     await sign_checkSign();
 

@@ -31,9 +31,9 @@
     $(document).ready(async function () {
         await signStatus();
         if (isLogin) {
-        //  로그인 된 회원이 회원정보 수정 페이지를 들어왔을때 특별한 이벤트가 필요하지 않음.
+            //  로그인 된 회원이 회원정보 수정 페이지를 들어왔을때 특별한 이벤트가 필요하지 않음.
         } else {
-          //나중에 info창에서 내 정보 보기 접근을 금지하는게 더 좋은 방법..
+            //나중에 info창에서 내 정보 보기 접근을 금지하는게 더 좋은 방법..
             window.location.replace("/");
             window.alert("회원가입이 필요한 서비스입니다.")
         }
@@ -88,26 +88,8 @@
         let pw = $("#user_pass").val();
         if (pw) {
             $('input[name=leave]').attr("disabled", false);
-            $("#btn_leave").attr("disabled", false);
-            $("#btn_leave").css("opacity", "100%");
         } else {
             $('input[name=leave]').attr("disabled", true);
-            $("#btn_leave").attr("disabled", true);
-            $("#btn_leave").css("opacity", "50%");
-        }
-    }
-
-    function check_change_pw() {
-        var current_pass = $("#current_pass").val();
-        var new_pass = $("#new_pass").val();
-        var new_pass_check = $("#new_pass_check").val();
-
-        if (current_pass && (new_pass == new_pass_check)) {
-            $("#btn_edit_pw").attr("disabled", false);
-            $("#btn_edit_pw").css("opacity", "100%");
-        } else {
-            $("#btn_edit_pw").css("opacity", "50%");
-            $("#btn_edit_pw").attr("disabled", true);
         }
     }
 
@@ -130,40 +112,67 @@
         } else if (check == 0) {
             window.alert('!,@,#,$,% 의 특수문자가 들어가 있지 않습니다.')
             $(".sign-up").prop("disabled", true);
-
-
         } else {
-            if (pw == check_pw) {
-                $(".check-pw").html("correct");
-                $(".check-pw").css("color", "blue");
-                // $(".sing-up").fadeIn();
-                $(".sign-up").prop("disabled", false);
-
-            } else {
-                $(".check-pw").html("wrong");
-                $(".check-pw").css("color", "red");
-                $(".sign-up").prop("disabled", true);
-
-            }
+            $(".btn").prop("disabled", false);
         }
     }
 
-
+    //  비밀번호변경
     let isPassiblePassword = false;
 
     function check_change_password() {
         isPassiblePassword = false;
-
+        console.log('hi')
         let new_pass = $('#new_pass').val();
         let new_pass_check = $('#new_pass_check').val();
 
         if (new_pass === new_pass_check) {
             isPassiblePassword = true;
             $('#checkPasswordText').text('새로운 비밀번호 확인 완료')
+            $("#btn_edit_pw").prop("disabled", false);
+            $("#btn_edit_pw").css("opacity", "100%");
+
 
         } else {
-            $('#checkPasswordText').text('새로운 비밀번호를 확인해 주세요.')
+            window.alert('새로운 비밀번호를 확인해주세요.')
+            $("#btn_edit_pw").css("opacity", "50%");
+            $("#btn_edit_pw").attr("disabled", true);
         }
+    }
+
+    async function test_change_pass() {
+        if (isPassiblePassword) {
+            let current_pass = $('#current_pass').val();
+            let new_pass = $('#new_pass').val();
+
+            let response = await sign_changePassword(current_pass, new_pass);
+
+            if (response['success']) {
+                alert(response['success']);
+                signout_mode();
+                window.location.reload();
+            } else if (response['fail']) {
+                alert(response['fail']);
+            }
+        } else {
+            alert('새로운 비밀번호를 확인해 주세요.')
+        }
+
+    }
+
+    //  회원탈퇴
+    async function test_delete_user() {
+        let password = $('#user_pass').val();
+        console.log(password)
+
+        let response = await sign_delete(password);
+        console.log(response)
+
+        if (response['success']) {
+            alert(response['success']);
+            signout_mode();
+            window.location.replace('/')
+        } else if (response['fail']) alert(response['fail']);
     }
 
 
@@ -173,7 +182,7 @@
 <!-- 왼쪽 -->
 <div class="left_side">
     <div class="left_top">
-        <a href="./index.html"> 차茶 </a>
+        <a href="./index"> 차茶 </a>
     </div>
     <div class="left_middle">
         <div class="big_Title">
@@ -222,8 +231,7 @@
                         <div class="insert_form_name">
                             <span class="insert_text">새 비밀번호</span>
                         </div>
-                        <input name="psw" class="insert_input" id="new_pass" type="password"
-                               oninput="check_change_password();"/>
+                        <input name="psw" class="insert_input" id="new_pass" type="password" onchange="check_pw()"/>
                     </div>
                     <!-- 새 비밀번호 확인 -->
                     <div class="insert_form">
@@ -231,7 +239,7 @@
                             <span class="insert_text">새 비밀번호 확인</span>
                         </div>
                         <input name="psw_check" class="insert_input" id="new_pass_check" type="password"
-                               onchange="check_change_password();"/>
+                               onchange="check_change_password()"/>
                     </div>
                     <button type="button" class="btn" id="btn_edit_pw" onclick="test_change_pass();" disabled>저장
                     </button>
@@ -246,7 +254,7 @@
                         <div class="insert_form_name">
                             <span class="insert_text">현재 비밀번호</span>
                         </div>
-                        <input class="insert_input" id="user_pass" type="text" onchange="check_yes_no()"/>
+                        <input class="insert_input" id="user_pass" type="password" onchange="check_yes_no()"/>
                     </div>
                     <div id="form_mg_tea_benefit" class="insert_form">
                         <div class="insert_form_name_1">
@@ -255,15 +263,14 @@
                         <div class="insert_input" id="insert_eff">
                             <input type="radio" name="leave" id="leave_1" value="탈퇴" onclick="check_delete()" disabled>
                             <label for="leave_1" style="margin-right: 34px"><span></span>예</label>
-                            <input type="radio" name="leave" id="leave_0" value="탈퇴안함" disabled>
+                            <input type="radio" name="leave" id="leave_0" value="탈퇴안함" onclick="check_delete()"
+                                   disabled>
                             <label for="leave_0"><span></span>아니요</label>
                         </div>
                     </div>
 
+                    <button type="button" class="btn" id="btn_leave" onclick="test_delete_user()" disabled>확인</button>
 
-                    <a href=" ">
-                        <button class="btn" id="btn_leave" onclick="test_delete_user()" disabled>확인</button>
-                    </a>
                 </div>
             </div>
         </div>

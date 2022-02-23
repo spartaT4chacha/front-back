@@ -96,6 +96,11 @@ def contact_page():
     return render_template('contact.html')
 
 
+@app.route('/zzim_list')
+def zzim_list_page():
+    return render_template('zzim_list.html')
+
+
 @app.route('/index')
 def index_page():
     return render_template('index.html')
@@ -149,7 +154,7 @@ def read_mongo():
     type_receive = selector_receive['type_give']
     benefit_receive = selector_receive['benefit_give']
     caffeineOX_receive = selector_receive['caffeineOX_give']
-    if(caffeineOX_receive[0] == True):
+    if (caffeineOX_receive[0] == True):
         caff = ['카페인']
     else:
         caff = ['디카페인']
@@ -182,7 +187,6 @@ def read_mongo():
     # 다 걸러진 결과값을 JSON 형식으로 바꿔준다. (JSON 형식을 갖는 string으로 저장됨! 클라이언트에서 parsing)
     find_list = df_caffeine.to_json(orient='records', force_ascii=False)
     return jsonify({'find_teas': find_list})
-
 
 
 @app.route('/recommend')  # 검색창 부분 건드리지 않으려고 우선 따로 만들어봄, 병합시 삭제 또는 수정
@@ -255,13 +259,14 @@ def like_all():
 @jwt_required()
 def showScrapTea():
     current_user = get_jwt_identity().upper()
-    check_id_list = db.users.find_one({'user_id': current_user})
+    check_id_list = list(db.users.find({'id': current_user}))[0]['scrap_id']
     if check_id_list is not None:
-        scrap_list = list(db.users.find({'id': '123'}))
-        a = scrap_list[0]['scrap_id']
+        a = check_id_list.split(',')
+        all_scraps = []
         for i in a:
-            b = list(db.tealist.find({'_id': i}))
-        return jsonify({'scrapTeas': b})
+            check_tealist = list(db.tealist.find({'name': i}, {'_id': False}))[0]
+            all_scraps.append(check_tealist)
+        return jsonify({'scrapTeas': all_scraps})
     else:
         return jsonify({'msg': '비어있습니다'})
 
@@ -340,7 +345,8 @@ def signup():
     doc = {
         'id': id_receive,
         'password': hashed_password,
-        'nickname': nickname_receive
+        'nickname': nickname_receive,
+        'scrap_id': None
     }
 
     print(doc)
@@ -433,6 +439,19 @@ def refresh():
     return response
 
 
+# sign information 유저정보
+@app.route('/sign/getNickname', methods=['GET'])
+@jwt_required()
+def api_getNickname():
+    print('get Nickname start')
+    current_user = get_jwt_identity().upper()
+    print(current_user)
+
+    user = db.users.find_one({'id': current_user})
+
+    return jsonify({'nickname': user['nickname']})
+
+
 # sign information 유저정보변경
 @app.route('/sign/change_pass', methods=['POST'])
 @jwt_required()
@@ -488,6 +507,21 @@ def api_delete_user():
     else:
         print('fail1')
         return jsonify({'fail': '로그인 먼저 해주세요.'})
+
+
+# check admin
+@app.route('/sign/checkAdmin', methods=['GET'])
+@jwt_required()
+def checkAdmin():
+    print('checkAdmin start')
+
+    id_receive = get_jwt_identity().upper()
+    user = db.users.find_one({'id': id_receive})
+
+    if user['isAdmin']:
+        return jsonify({'check': True})
+    else:
+        return jsonify({'check': False})
 
 
 @app.route('/sign_test')

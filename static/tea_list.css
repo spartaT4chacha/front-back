@@ -1,402 +1,414 @@
+
 * {
-  list-style: none;
-  text-decoration: none;
-  border-collapse: collapse;
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-  font-family: 'Noto Serif KR', serif;
+    list-style: none;
+    text-decoration: none;
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    font-family: 'Noto Serif KR', serif;
 
 }
 
-body{
-  background-color: #F2EFE8;
-  
+body {
+    background-color: #F2EFE8;
+
 }
 
-.container_total{
-  display : flex;
-  flex-direction: column;
+.container_total {
+    display: flex;
+    flex-direction: column;
 }
-.nav_container{
-   background-color: #0F3331;
+
+.nav_container {
+    background-color: #0F3331;
 }
-.mytaste_container{
-  display : flex;
-  flex-direction: column;
-  align-items: center;
+
+.mytaste_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.list_container{
-  display : flex;
-  justify-content: center;
+
+.list_container {
+    display: flex;
+    justify-content: center;
 }
-.chosen_tea_list_cover{
-  padding-top : 60px;
-  display : flex;
-  flex-direction: column;
-  align-items: center;
-  width:1300px;
+
+.chosen_tea_list_cover {
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1300px;
 }
 
 /*네비게이션*/
-.navigation{
-  padding: 0px 60px 0px 60px;
-  overflow: hidden;
-  height: 56px;
+.navigation {
+    padding: 0px 60px 0px 60px;
+    overflow: hidden;
+    height: 56px;
 }
-li{
-  display: inline;
-  float: left;
+
+li {
+    display: inline;
+    float: left;
 }
+
 .navi {
-  color: #F2EFE8;
-  font-size: 20px;
-  line-height: 55px;
-  margin-left: 20px;
-  margin-right: 20px;
+    color: #F2EFE8;
+    font-size: 20px;
+    line-height: 55px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .nav_login {
-  margin-right: 40px;
+    margin-right: 40px;
 }
 
-.click{
-  margin-top: 70px;
-  border:1px solid #0F3331;
-  border-radius: 50%;
-  width: 168px;
-  padding-top:15px;
-  padding-bottom: 15px;
-  display: inline-block;
+.click {
+    margin-top: 70px;
+    border: 1px solid #0F3331;
+    border-radius: 50%;
+    width: 168px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    display: inline-block;
 
 }
-#order_title{
- background-color: #F2EFE8;
-  outline : none;
-  border : none;
-  margin-right: 5px;
-  font-size: 15px;
-   color : #0F3331;
-  cursor: pointer;
+
+#order_title {
+    background-color: #F2EFE8;
+    outline: none;
+    border: none;
+    margin-right: 5px;
+    font-size: 15px;
+    color: #0F3331;
+    cursor: pointer;
 }
 
-#order_recommend{
-background-color: #F2EFE8;
-  outline : none;
-  border : none;
-  margin-left:5px;
-  font-size: 15px;
-  color : #0F3331;
-  cursor: pointer;
+#order_recommend {
+    background-color: #F2EFE8;
+    outline: none;
+    border: none;
+    margin-left: 5px;
+    font-size: 15px;
+    color: #0F3331;
+    cursor: pointer;
 }
 
-.tea-box:hover{
-  transform: scale(1.1);
+.tea-box:hover {
+    transform: scale(1.1);
 }
 
-.chosen_tea_blank{
-  flex: 1.7;
-  width: 25%;
+.chosen_tea_blank {
+    flex: 1.7;
+    width: 25%;
 }
 
-.chosen_tea_list{
-  margin: 60px auto 130px;
-  flex: 6.6;
-  display : flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap : 40px;
-  width : 1500px;
-}
-.tea-box{
-width: 261px;
-font-family: 'Noto Serif KR', serif;
-  margin-bottom: 60px;
-  padding :20px;
+.chosen_tea_list {
+    margin: 60px auto 130px;
+    flex: 6.6;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    width: 1500px;
 }
 
-.tea-box p{
-font-weight: bold;
-margin: 8px 0px 3px;
+.tea-box {
+    width: 261px;
+    font-family: 'Noto Serif KR', serif;
+    margin-bottom: 60px;
+    padding: 20px;
 }
 
-.tea-image{
-  cursor: pointer;
+.tea-box p {
+    font-weight: bold;
+    margin: 8px 0px 3px;
+}
+
+.tea-image {
+    cursor: pointer;
 }
 
 
 /* 내_취향 알아보기 박스*/
-.mytaste{
-  display : flex;
-  flex-direction : column;
-  align-items: center;
-}
-.mytaste_title_underline{
-  display : flex;
-  justify-content: center;
-  width : 580px;
-  border-bottom: 2px solid #0F3331;
-  margin-bottom: 60px;
-  margin-top: 180px;
-}
-.mytaste_title{
-  background-color: #0F3331;
-  width : 393px;
-  height : 45px;
-  text-align: center;
-  padding-top: 5px;
+.mytaste {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.mytaste_hashtag{
-  display : flex;
-  flex-wrap: wrap;
-  width: 1265px;
-  justify-content: center;
-  align-items: center;
-}
-.mytaste_tag{
-  color: #0F3331;
-  border : 1px solid #0F3331;
-  width : 100px;
-  height : 36px;
-  border-radius: 10px;
-  font-size: 18px;
-  text-align: center;
-  line-height: 34px;
-  margin: 0px 5px 10px;
+.mytaste_title_underline {
+    display: flex;
+    justify-content: center;
+    width: 580px;
+    border-bottom: 2px solid #0F3331;
+    margin-bottom: 60px;
+    margin-top: 180px;
 }
 
-.mytaste_count{
-  margin-top: 30px;
+.mytaste_title {
+    background-color: #0F3331;
+    width: 393px;
+    height: 45px;
+    text-align: center;
+    padding-top: 5px;
+}
+
+.mytaste_hashtag {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1265px;
+    justify-content: center;
+    align-items: center;
+}
+
+.mytaste_tag {
+    color: #0F3331;
+    border: 1px solid #0F3331;
+    width: 100px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 18px;
+    text-align: center;
+    line-height: 34px;
+    margin: 0px 5px 10px;
+}
+
+.mytaste_count {
+    margin-top: 30px;
 }
 
 @keyframes likeAnimation {
-  0% {
-      transform: scale(30);
-  }
-  100% {
-      transform: scale(1);
-  }
+    0% {
+        transform: scale(30);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* 상세페이지 css*/
-.background{
-  display: none;
-  background: rgba(0,0,0,0.8);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+.background {
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
 }
 
-.window{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  
-}
+.window {
+    position: relative;
+    width: 100%;
+    height: 100%;
 
-.modal {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #F9F1DD;
-  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-
-  width: 1125px;
-  height: 775px;
-  /* 날라오는 애니메이션 효과;; */
-  transition: all 0.5s
 }
 
 .modal {
-  /* diplay: flex; */
-  flex-direction: column;
-  padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F9F1DD;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+
+    width: 1125px;
+    height: 775px;
+    /* 날라오는 애니메이션 효과;; */
+    transition: all 0.5s
+}
+
+.modal {
+    /* diplay: flex; */
+    flex-direction: column;
+    padding: 20px;
 }
 
 .modal_top {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  width: 1125px;
-  height: 220px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 1125px;
+    height: 220px;
 }
 
 .modal_bottom {
-  display: flex;
-  height: 530px;
-  padding: 20px;
+    display: flex;
+    height: 530px;
+    padding: 20px;
 }
 
 .modal_exit {
-  display: flex;
-  flex-direction: row-reverse;
-  flex: 1;
+    display: flex;
+    flex-direction: row-reverse;
+    flex: 1;
 }
 
 .modal_teaname {
-  flex-direction: column;
-  margin: auto;
-  flex: 4;
-  height: 195px;
+    flex-direction: column;
+    margin: auto;
+    flex: 4;
+    height: 195px;
 }
 
 .bottom_left {
-  flex: 2;
-  display: flex;
-  flex-direction: column-reverse;
+    flex: 2;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .bottom_middle {
-  flex: 3;
-  padding: 10px 10px 40px 10px;
-  width: 355px;
-  display: flex;
-  flex-direction: column-reverse;
+    flex: 3;
+    padding: 10px 10px 40px 10px;
+    width: 355px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .bottom_right {
-  display: flex;
-  flex-direction: column-reverse;
-  flex: 3;
-  padding-bottom: 30px;
+    display: flex;
+    flex-direction: column-reverse;
+    flex: 3;
+    padding-bottom: 30px;
 }
 
 .bottom_left_box {
-  display: flex;
-  flex-direction: column-reverse;
-  width: 250px;
-  margin: auto auto 50px auto;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 250px;
+    margin: auto auto 50px auto;
 }
 
-.bottom_left_box_like{
-  padding-bottom: 5px;
-  text-align: left;
-  color: #037057;
+.bottom_left_box_like {
+    padding-bottom: 5px;
+    text-align: left;
+    color: #037057;
 }
 
 .bottom_middle_box {
-  margin: auto;
+    margin: auto;
 }
 
 .bottom_right_box {
-  border-top: 1px solid #037057;
-  display: flex;
-  flex-direction: column-reverse;
-  width: 350px;
-  margin: auto auto 16px auto;
-  padding-top: 25px;
+    border-top: 1px solid #037057;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 350px;
+    margin: auto auto 16px auto;
+    padding-top: 25px;
 }
 
 .hyoneung {
-  font-size: 12px;
-  border-top: 1px solid #037057;
-  padding: 10px 5px 5px 0px;
-  display: flex;
-  flex-wrap: wrap;
+    font-size: 12px;
+    border-top: 1px solid #037057;
+    padding: 10px 5px 5px 0px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .hashtag {
-  border-radius: 20px;
-  text-align: center;
-  border: 1.36px solid #037057;
-  color: #037057;
-  width: 65px;
-  padding: 2px;
-  margin: 3px;
-  font-size: 11px;
+    border-radius: 20px;
+    text-align: center;
+    border: 1.36px solid #037057;
+    color: #037057;
+    width: 65px;
+    padding: 2px;
+    margin: 3px;
+    font-size: 11px;
 
 }
 
 .caffeine {
-  font-size: 12px;
-  color: #037057;
-  margin : 10px;
+    font-size: 12px;
+    color: #037057;
+    margin: 10px;
 }
 
 
 .desc {
-  font-size: 12px;
-  color: #037057;
-  padding-bottom: 15px;
+    font-size: 12px;
+    color: #037057;
+    padding-bottom: 15px;
 }
 
 .notice {
-  font-size: 12px;
-  color: #037057;
-  margin-top: 15px;
-  text-align: left;
-  padding-bottom: 15px;
+    font-size: 12px;
+    color: #037057;
+    margin-top: 15px;
+    text-align: left;
+    padding-bottom: 15px;
 }
-
 
 
 .like-content {
-  display: inline-block;
-  width: 350px;
-  height: 55px;
-  font-size: 18px;
-  text-align: center;
-  margin-top: 20px;
+    display: inline-block;
+    width: 350px;
+    height: 55px;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
 }
+
 .like-content span {
     color: #9d9da4;
 }
 
 
 .like-content .btn-secondary {
-  display: block;
-  text-align: center;
-  background: #037057;
-  width: 350px;
-  height: 55px;
-  font-size: 20px;
-  cursor: pointer;
-  border: none;
-  outline: none;
-  color: #F9F1DD;
-  text-decoration: none;
-  transition: 0.3s ease;
+    display: block;
+    text-align: center;
+    background: #037057;
+    width: 350px;
+    height: 55px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: #F9F1DD;
+    text-decoration: none;
+    transition: 0.3s ease;
 }
 
 .like-content .btn-secondary:hover {
-  transform: translateY(-3px);
+    transform: translateY(-3px);
 }
 
 .like-content .btn-secondary .fa {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 .animate-like {
-  animation-name: likeAnimation;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-duration: 0.65s;
+    animation-name: likeAnimation;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-duration: 0.65s;
 }
 
 @keyframes likeAnimation {
-  0% {
-      transform: scale(30);
-  }
-  100% {
-      transform: scale(1);
-  }
+    0% {
+        transform: scale(30);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
-.exit-button{
-  /* display: inline; */
-  /* float: right; */
-  /* padding-right: 10%; */
-  font-size: 30px;
-  /* width: 1100px; */
-  color: #017258;
-  cursor:pointer;
-  /* z-index: 3; */
-  margin-left: 1050px;
-  cursor:pointer;
+.exit-button {
+    /* display: inline; */
+    /* float: right; */
+    /* padding-right: 10%; */
+    font-size: 30px;
+    /* width: 1100px; */
+    color: #017258;
+    cursor: pointer;
+    /* z-index: 3; */
+    margin-left: 1050px;
+    cursor: pointer;
 }

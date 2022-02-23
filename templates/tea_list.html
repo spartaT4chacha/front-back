@@ -26,119 +26,49 @@
 
     <!-- 모달 js -->
     <script>
-
+        let isLogin = false
         //페이지가 그려지면 실행되어야 할 함수.
+        //local storag에서 추천으로 선택된 tea_list를 가져온다.
+        //해시태그 가져오기
+
         $(document).ready(async function () {
-
-            //해시태그 뿌려주기
-            checkList = JSON.parse(localStorage.getItem("check_list"));
-            for (let i = 0; i < checkList.length; i++) {
-                let name = checkList[i];
-                let temp = `<div className="mytaste_tag">${name}</div>`
-                $('.mytaste_hashtag').append(temp);
-            }
-
             await signStatus();
             if (isLogin) {
                 html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/tea_list" onclick="signinout()">로그아웃</a>`
                 $('#umm').append(html)
-                // temp = `<a class="navi" href="./info"><span class="material-icons md-36" style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>`
             } else {
                 html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/login" ">로그인</a>`
                 $('#umm').append(html)
-                // temp = `<a class="navi" href="./info"><span class="material-icons md-36" style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>`
-
             }
-
-
+            receiveTea = JSON.parse(localStorage.getItem("findlist"));
+            checkList = JSON.parse(localStorage.getItem("check_list"));
+            for (let i = 0; i < checkList.length; i++) {
+                let name = checkList[i];
+                let temp = `<div className="mytaste_tag" color="#0F3331" border = "1px solid #0F3331" width = "100px" height ="36px" border-radius= "10px" font-size="18px" text-align="center" line-height="34px" margin="0px 5px 10px">#${name}</div>`
+                $('.mytaste_hashtag').append(temp);
+            }
             //추천 티 리스트 뿌려주는 함수 실행하기
-            showTea()
+            showTea(receiveTea)
         });
 
 
-        async function signStatus() {
-            isLogin = await sign_checkSign();
-            if (isLogin) signin_mode();
-            else signout_mode();
-        }
+        // 모달 js  $(function () {
+        $("img").click(function (element) {
+            let src = element.target.getAttribute('class');
+            console.log(src)
+            let name = receiveTea[src]['name']
+            let caffeine = receiveTea[src]['caffeine']
+            let benefitdetail = receiveTea[src]['benefitdetail']
+            let desc = receiveTea[src]['desc']
+            let caution = receiveTea[src]['caution']
+            let img = receiveTea[src]['img']
+            let like = receiveTea[src]['like']
+            let eng_type = receiveTea[src]['eng_type']
 
-        function signin_mode() {
-            isLogin = true;
-        }
-
-        function signout_mode() {
-            isLogin = false;
-            sign_signout();
-        }
-
-        async function signinout() {
-            if (isLogin) {
-                signout_mode();
-            } else {
-                let id = $('#signin_id').val();
-                let pass = $('#signin_pass').val();
-
-                let result = await sign_signin(id, pass)
-                if (result) {
-                    if (result['success']) {
-                        alert(result['success']);
-                        window.location.replace('/');
-                    } else if (result['fail']) alert(result['fail'])
-                } else alert('서버연결실패')
-            }
-        }
-
-        //티 localstorage에 저장되어있는 값들을 불러와서 뿌려주는 js
-        function showTea() {
-            receiveTea = JSON.parse(localStorage.getItem("findlist"));
-            // console.log(receiveTea)
-            let cnt = receiveTea.length;
-            let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
-            $('.mytaste_count').append(tmp);
-
-            for (let i = 0; i < cnt; i++) {
-                let name = receiveTea[i]['name']
-                let type = receiveTea[i]['type']
-                let benefit = receiveTea[i]['benefit']
-                let caffeineOX = receiveTea[i]['caffeineOX']
-                let caffeine = receiveTea[i]['caffeine']
-                let benefitdetail = receiveTea[i]['benefitdetail']
-                let desc = receiveTea[i]['desc']
-                let caution = receiveTea[i]['caution']
-                let img = receiveTea[i]['img']
-                let like = receiveTea[i]['like']
-                let eng_type = receiveTea[i]['eng_type']/* 좋아요/찜 기능 통합에 따라 like 변수 생존여부 결정 */
-
-                let temp_html = `<div class="tea-box">
-                                    <img id = 'tea_src' class="${i}" width="261px" height="365.28px"
-                                         src="${img}">
-                                    <P style="color:#C53709;font-size:17px;">${name}</P>
-                                    <P style="font-size: 10px;">${eng_type}</P>
-                                </div>`
-                $('.chosen_tea_list').append(temp_html);
-            }
-        }
-
-
-        // 모달 js
-        $(function () {
-            $("img").click(function (element) {
-                let src = element.target.getAttribute('class');
-                // console.log(src)
-                receiveTea = JSON.parse(localStorage.getItem("findlist"));
-                let name = receiveTea[src]['name']
-                let caffeine = receiveTea[src]['caffeine']
-                let benefitdetail = receiveTea[src]['benefitdetail']
-                let desc = receiveTea[src]['desc']
-                let caution = receiveTea[src]['caution']
-                let img = receiveTea[src]['img']
-                let like = receiveTea[src]['like']
-                let eng_type = receiveTea[src]['eng_type']
-
-                let temp_html = `<div class="window">
+            let temp_html = `<div class="window">
                                     <div class="modal">
                                         <div class="modal_top">
-                                            <div class="exit-button">
+                                            <div class="exit-button" onclick="fade_out()">
                                                 <i class="fa-solid fa-circle-xmark"></i>
                                             </div>
                                             <div class="modal_teaname">
@@ -188,24 +118,209 @@
                                         </div>
                                     </div>
                                 </div>`
-                $('.background').append(temp_html);
+            $('.background').append(temp_html);
 
-                let benefit_list = benefitdetail.split(',');
-                // console.log(benefit_list);
-                for (let i = 0; i < benefit_list.length; i++) {
-                    let tmp = benefit_list[i];
-                    let tmp_html = `<div className="hashtag">${tmp}</div>`
-                    $('.hyoneung').append(tmp_html);
+            let benefit_list = benefitdetail.split(',');
+            // console.log(benefit_list);
+            for (let i = 0; i < benefit_list.length; i++) {
+                let tmp = benefit_list[i];
+                let tmp_html = `<div className="hashtag">${tmp}</div>`
+                $('.hyoneung').append(tmp_html);
+            }
+
+            $(".background").fadeIn();
+        });
+
+        // function click_modal() {
+        //     $("img").click(function (element) {
+        //         let src = element.target.getAttribute('class');
+        //         console.log(src)
+        //         let name = receiveTea[src]['name']
+        //         let caffeine = receiveTea[src]['caffeine']
+        //         let benefitdetail = receiveTea[src]['benefitdetail']
+        //         let desc = receiveTea[src]['desc']
+        //         let caution = receiveTea[src]['caution']
+        //         let img = receiveTea[src]['img']
+        //         let like = receiveTea[src]['like']
+        //         let eng_type = receiveTea[src]['eng_type']
+        //
+        //         let temp_html = `<div class="window">
+        //                             <div class="modal">
+        //                                 <div class="modal_top">
+        //                                     <div class="exit-button" onclick="fade_out()">
+        //                                         <i class="fa-solid fa-circle-xmark"></i>
+        //                                     </div>
+        //                                     <div class="modal_teaname">
+        //                                         <p style="text-align: center;font-size: 80px;color:#037057;margin:auto">${eng_type}</p>
+        //                                         <p style="text-align: right;font-size: 30px;color:#037057;margin:auto">${name}</p>
+        //                                     </div>
+        //                                 </div>
+        //                                 <div class="modal_bottom">
+        //                                     <div class="bottom_left">
+        //                                         <div class="bottom_left_box">
+        //                                             <div class="hyoneung">
+        //
+        //                                             </div>
+        //                                             <div class="caffeine">
+        //                                                 <p style="color:#037057;text-align: left;">#카페인 함량</p>
+        //                                                 <p style="text-align: left">${caffeine}</p>
+        //                                             </div>
+        //                                             <hr width="inherit" color="#037057" size="1px">
+        //                                             <div class="bottom_left_box_like">
+        //                                                 <span>♥<span id="likeNum"> ${like}</span></span>
+        //                                             </div>
+        //                                         </div>
+        //                                     </div>
+        //                                     <div class="bottom_middle">
+        //                                         <div class="bottom_middle_box">
+        //                                             <img src="${img}" style="width:355px;height:496px;border-top-right-radius:250px;" id="teaimg"/>
+        //                                         </div>
+        //                                     </div>
+        //                                     <div class="bottom_right">
+        //                                         <div class="bottom_right_box">
+        //                                             <div class="zzim">
+        //                                                 <div class="like-content">
+        //                                                     <button class="btn-secondary like-review">
+        //                                                         I like it <i class="fa fa-heart" aria-hidden="true"></i>
+        //                                                     </button>
+        //                                                 </div>
+        //                                             </div>
+        //                                             <div class="notice">
+        //                                                 <span class="material-icons" style="font-size:15px;">bolt</span>
+        //                                                 <p style="text-align: left;">${caution}</p>
+        //                                             </div>
+        //                                             <div class="desc">
+        //                                                 <p style="text-align: left;">${desc}</p>
+        //                                             </div>
+        //                                         </div>
+        //                                     </div>
+        //                                 </div>
+        //                             </div>
+        //                         </div>`
+        //         $('.background').append(temp_html);
+        //
+        //         let benefit_list = benefitdetail.split(',');
+        //         // console.log(benefit_list);
+        //         for (let i = 0; i < benefit_list.length; i++) {
+        //             let tmp = benefit_list[i];
+        //             let tmp_html = `<div className="hashtag">${tmp}</div>`
+        //             $('.hyoneung').append(tmp_html);
+        //         }
+        //
+        //         $(".background").fadeIn();
+        //     });
+        // }
+
+        // $('.chosen_tea_list').empty();
+        // $('.mytaste_count').empty();
+
+        // 두번 눌렀을때 선택해제?를 하려면,, 눌리면 함수가 실행되는 구조라서 전체보기 버튼 없으면 불가능 할 듯
+        // 버튼 누르는 횟수로 이벤트 처리하려 했으나, 왔다갔다 누르는경우, 하나만 계속 누르는 경우 두가지라 처리하기 애매..
+        function check_title() {
+            // 이렇게 이미지 처리하고 제목순 눌렸을때는
+            // 두번 누른 경우
+            let color = $("#order_title").css("color")
+            if (color === 'rgb(197, 55, 9)') {
+                $("#order_title").css("color", "#0F3331");
+                $("#order_title").css("transform", "scale(1)");
+
+            } else {
+                $("#order_title").css("color", "#C53709");
+                $("#order_title").css("transform", "scale(1.15)");
+                $("#order_recommend").css("color", "#0F3331");
+                $("#order_recommend").css("transform", "scale(1)");
+
+            }
+        }
+
+        function check_recommend() {
+            var color = $("#order_recommend").css("color")
+            // 다시 눌린 경우
+            if (color === 'rgb(197, 55, 9)') {
+                $("#order_recommend").css("color", "#0F3331");
+                $("#order_recommend").css("transform", "scale(1)");
+            } else {
+                $("#order_recommend").css("color", "#C53709");
+                $("#order_recommend").css("transform", "scale(1.15)");
+                $("#order_title").css("color", "#0F3331");
+                $("#order_title").css("transform", "scale(1)");
+            }
+        }
+
+
+        async function signStatus() {
+            isLogin = await sign_checkSign();
+            if (isLogin) signin_mode();
+            else signout_mode();
+        }
+
+        function signin_mode() {
+            isLogin = true;
+        }
+
+        function signout_mode() {
+            isLogin = false;
+            sign_signout();
+        }
+
+        async function signinout() {
+            if (isLogin) {
+                signout_mode();
+            } else {
+                let id = $('#signin_id').val();
+                let pass = $('#signin_pass').val();
+
+                let result = await sign_signin(id, pass)
+                if (result) {
+                    if (result['success']) {
+                        alert(result['success']);
+                        window.location.replace('/');
+                    } else if (result['fail']) alert(result['fail'])
+                } else alert('서버연결실패')
+            }
+        }
+
+        //티 localstorage에 저장되어있는 값들을 불러와서 뿌려주는 js
+        function showTea(receiveTea) {
+            // console.log(receiveTea)
+            let cnt = receiveTea.length;
+            let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
+            $('.mytaste_count').append(tmp);
+
+            for (let i = 0; i < cnt; i++) {
+                let name = receiveTea[i]['name']
+                let img = receiveTea[i]['img']
+                let eng_type = receiveTea[i]['eng_type']/* 좋아요/찜 기능 통합에 따라 like 변수 생존여부 결정 */
+
+                let temp_html = `<div class="tea-box">
+                                    <img id = 'tea_src' class="${i}" width="261px" height="365.28px"
+                                         src="${img}" onclick="click_modal()">
+                                    <P style="color:#C53709;font-size:17px;">${name}</P>
+                                    <P style="font-size: 10px;">${eng_type}</P>
+                                </div>`
+                $('.chosen_tea_list').append(temp_html);
+            }
+        }
+
+        /* 이름순, 좋아요순 정렬하기 위한 함수 선언 */
+        var sortJSON = function (data, key, type) {
+            if (type == undefined) {
+                type = "asc";
+            }
+            return data.sort(function (a, b) {
+                var x = a[key];
+                var y = b[key];
+                if (type == "desc") {
+                    return x > y ? -1 : x < y ? 1 : 0;
+                } else if (type == "asc") {
+                    return x < y ? -1 : x > y ? 1 : 0;
                 }
-
-                $(".background").fadeIn();
             });
+        };
 
-
-            $(".exit-button").click(function () {
-                $(".background").fadeOut();
-            });
-        })
+        function fade_out() {
+            $(".background").fadeOut();
+        }
 
         // 좋아요 js
         $(function () {
@@ -215,51 +330,6 @@
             });
         });
 
-        // 정렬 js
-        // 두번 눌렀을때 선택해제?를 하려면,, 눌리면 함수가 실행되는 구조라서 전체보기 버튼 없으면 불가능 할 듯
-        // 버튼 누르는 횟수로 이벤트 처리하려 했으나, 왔다갔다 누르는경우, 하나만 계속 누르는 경우 두가지라 처리하기 애매..
-
-
-        function check_title() {
-            // 이렇게 이미지 처리하고 제목순 눌렸을때는
-            // 두번 누른 경우
-            var color = $("#order_title").css("color")
-            if (color === 'rgb(197, 55, 9)') {
-                // console.log('이거 왜 실행 안돼?')
-                // console.log($("#order_title").css("color"))
-                $("#order_title").css("color", "#0F3331");
-                $("#order_title").css("transform", "scale(1)");
-            } else {
-                $("#order_title").css("color", "#C53709");
-                $("#order_title").css("transform", "scale(1.15)");
-                $("#order_recommend").css("color", "#0F3331");
-                $("#order_recommend").css("transform", "scale(1)");
-                // console.log(color)
-            }
-
-            // DB에서 받아온 정보를 이 곳에서 재 정렬해줘야 할 듯
-
-
-        }
-
-        function check_recommend() {
-            var color = $("#order_recommend").css("color")
-            // 다시 눌린 경우
-            if (color === 'rgb(197, 55, 9)') {
-                // console.log('이거 왜 실행 안돼?')
-                // console.log($("#order_title").css("color"))
-                $("#order_recommend").css("color", "#0F3331");
-                $("#order_recommend").css("transform", "scale(1)");
-            } else {
-                $("#order_recommend").css("color", "#C53709");
-                $("#order_recommend").css("transform", "scale(1.15)");
-                $("#order_title").css("color", "#0F3331");
-                $("#order_title").css("transform", "scale(1)");
-                // console.log(color)
-            }
-
-
-        }
     </script>
 
 </head>
@@ -272,7 +342,8 @@
         <ul class="navigation">
             <li><a href="./" class="navi">차茶</a></li>
             <li style="float:right">
-                <a class="navi" href="./info"><span class="material-icons md-36" style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+                <a class="navi" href="./info"><span class="material-icons md-36"
+                                                    style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
             <li id='umm' style="float:right">
         </ul>
     </div>
