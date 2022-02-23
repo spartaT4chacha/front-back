@@ -517,10 +517,12 @@ def checkAdmin():
 
     id_receive = get_jwt_identity().upper()
     user = db.users.find_one({'id': id_receive})
-
-    if user['isAdmin']:
-        return jsonify({'check': True})
-    else:
+    try:
+        if user['isAdmin']:
+            return jsonify({'check': True})
+        else:
+            return jsonify({'check': False})
+    except:
         return jsonify({'check': False})
 
 
