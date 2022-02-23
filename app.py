@@ -231,7 +231,6 @@ def teaList():
 # like+scrap -- 승신
 
 # ***************************************************************************************************
-
 @app.route('/tea/like_all', methods=['POST'])
 @jwt_required()
 def like_all():
@@ -239,18 +238,29 @@ def like_all():
     name_receive = request.form['name_give']
     target_tea = db.tealist.find_one({'name': name_receive})
     current_like = target_tea['like']
-    check_scrap_id = db.users.find_one({'user_id': current_user})['scrap_id']
 
-    if check_scrap_id is not None:
-        return jsonify({'alreadyScrap': '이미 찜 하셨습니다.'})
-    else:
-        new_like = current_like + 1
-        db.tealist.update_one({'name': name_receive}, {'$set': {'like': new_like}})
-        scrap_id = db.tealist.find_one({'name': name_receive})
-        id_list = []
-        id_list.append(scrap_id)
-        db.users.update_one({'id': current_user}, {'$set': {'scrap_id': id_list}}, True)
+    new_like = current_like + 1
+    db.tealist.update_one({'name': name_receive}, {'$set': {'like': new_like}})
+    if db.users.find({'id': current_user})[0]['scrap_id'] == None:
+        scrap_id = db.tealist.find_one({'name': name_receive})['name']
+        db.users.update_one({'id': current_user}, {'$set': {'scrap_id': scrap_id}}, True)
         return jsonify({'successScrap': '좋아요, 찜 완료.'})
+
+    else:
+        check_scrap_id = list(db.users.find({'id': current_user}))[0]['scrap_id']
+        a = check_scrap_id.split(',')
+        if name_receive in a:
+            new_like = current_like
+            db.tealist.update_one({'name': name_receive}, {'$set': {'like': new_like}})
+            return jsonify({'alreadyScrap': '이미 찜 하셨습니다.'})
+        else:
+            scrap_id = db.tealist.find_one({'name': name_receive})['name']
+            users_scrap_list = db.users.find({'id': current_user})[0]['scrap_id']
+
+            a = users_scrap_list + ',' + scrap_id
+
+            db.users.update_one({'id': current_user}, {'$set': {'scrap_id': a}}, True)
+            return jsonify({'successScrap': '좋아요, 찜 완료.'})
 
 
 # ***************************************************************************************************
@@ -517,6 +527,7 @@ def checkAdmin():
 
     id_receive = get_jwt_identity().upper()
     user = db.users.find_one({'id': id_receive})
+    # DB엔 관리자항목이 다른 유저들은 존재하지 않으므로,,
     try:
         if user['isAdmin']:
             return jsonify({'check': True})
