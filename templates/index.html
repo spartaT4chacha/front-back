@@ -136,25 +136,29 @@
                 arr.push(effect[i]);
             }
         }
-        if(!result1){
+        if (!result1.length) {
             result1 = type;
+
         }
-        if(!result2){
+        if (!result2.length) {
             result2 = effect;
         }
 
         var caffeine = $(':radio[name="caffien"]:checked').val();
-        console.log(result1, result2, caffeine);
-        arr.push(caffeine);
-        caff = new Array;
+        // console.log(result1, result2, caffeine);
+        if (caffeine) {
+            arr.push(caffeine);
+        }
+
         if (caffeine === "카페인") {
-            caff.push("카페인")
+
             caffeine = [true]
-        } else if(caffeine === "디카페인"){
-            caff.push("디카페인")
+        } else if (caffeine === "디카페인") {
+
             caffeine = [false]
-        } else{
-            caffeine = [true,false]
+        } else {
+
+            caffeine = [true, false]
         }
         //서버에 전송하기
         $.ajax({
@@ -257,6 +261,12 @@
         })
     }
 
+    function enter() {
+        if (window.event.keyCode == 13) {
+            search();
+        }
+    }
+
 
 </script>
 <body>
@@ -296,12 +306,9 @@
                     </div>
 
                     <div class="searchBar">
-                        <input id="search" placeholder="#내_취향 #셀프추천" type="text"/>
-                        <!-- <a href="./tea_list" onclick="get_search()"><span style="line-height: 46px; color:#0f3331"
-                            class="material-icons">search</span></a> -->
-                        <button onclick="search()" style="line-height: 46px; color:#0f3331"
-                                class="material-icons">search
-                        </button>
+                        <input id="search" placeholder="#내_취향 #셀프추천" type="text" onkeyup="enter()"/>
+                        <span href="#" onclick="search()" style="cursor: alias"><span
+                                style="line-height: 46px; color:#0f3331" class="material-icons">search</span></span>
                     </div>
                 </div>
 

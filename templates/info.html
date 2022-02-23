@@ -29,6 +29,98 @@
     <script src="../static/js/sign.js"></script>
 </head>
 
+<script>
+
+
+    $(document).ready(async function () {
+        $('.post-wrapper').slick({
+            // 한번에 보여지는 카드 수
+            slidesToShow: 4,
+            // 한번에 넘길 카드 수
+            slidesToScroll: 1,
+            // 자동 재생
+            autoplay: true,
+            // 자동 넘기는 속도
+            autoplaySpeed: 2000,
+            // 버튼 안보이게
+            nextArrow: $('.next'),
+            prevArrow: $('.prev'),
+        });
+        await signStatus();
+        if (isLogin) {
+            //    로그인 된 사용자는 내정보페이지에 접근할때 별다른 이벤트가 필요 없음-> 유저 이름과 이메일을 페이지에 띄어주어야 함. 찜 리스트 보여주어야 함.
+            let ID = await sign_getID();
+            let nickName = await sign_getNickname();
+            // console.log(ID)
+            console.log(nickName)
+            $("#userName").text(nickName);
+            $("#userEmail").text(ID);
+        } else {
+            window.alert("로그인이 필요한 기능입니다.")
+            window.location.replace("/")
+        }
+        // await showScrap()
+
+    });
+
+    async function signStatus() {
+        isLogin = await sign_checkSign();
+        if (isLogin) signin_mode();
+        else signout_mode();
+    }
+
+    function signin_mode() {
+        isLogin = true;
+    }
+
+    function signout_mode() {
+        isLogin = false;
+        sign_signout();
+    }
+
+    async function signinout() {
+        if (isLogin) {
+            signout_mode();
+        } else {
+            let id = $('#signin_id').val();
+            let pass = $('#signin_pass').val();
+
+            let result = await sign_signin(id, pass)
+            if (result) {
+                if (result['success']) {
+                    alert(result['success']);
+                    window.location.replace('/');
+                } else if (result['fail']) alert(result['fail'])
+            } else alert('서버연결실패')
+        }
+    }
+
+
+    async function showScrap() {
+        let access_token = await get_access_token();
+        $.ajax({
+            type: "GET",
+            url: "/tea/scrapList",
+            data: {},
+            headers: {"Authorization": "Bearer " + access_token},
+            success: function (response) {
+                if (response['scrapTeas']) {
+                    let scrapTea = response['scrapTeas']
+                    for (let i = 0; i < scrapTea.length; i++) {
+                        let name = scrapTea[i]['name']
+                        let img = scrapTea[i]['img']
+                        let temp_html = ` <div class="post" style="display: inline-block">
+                                                <img style="display:inline-block" src="${img}" class="slider-image">
+                                                <p>${name}</p>
+                                            </div>`
+                        $('#hmm').append(temp_html)
+                    }
+                }
+            }
+        })
+    }
+
+</script>
 <body>
 <!-- 왼쪽 -->
 <div class="left_side">
@@ -96,7 +188,7 @@
                     <div style="position:relative;">
                         <!--page slider -->
                         <div class="post-slider">
-                            <div class="post-wrapper">
+                            <div class="post-wrapper" id='hmm'>
 
                             </div>
                         </div>
@@ -108,104 +200,4 @@
     <div class="right_bottom"></div>
 </div>
 </body>
-
-<script>
-
-
-    $(document).ready(async function () {
-        $('.post-wrapper').slick({
-            // 한번에 보여지는 카드 수
-            slidesToShow: 4,
-            // 한번에 넘길 카드 수
-            slidesToScroll: 1,
-            // 자동 재생
-            autoplay: true,
-            // 자동 넘기는 속도
-            autoplaySpeed: 2000,
-            // 버튼 안보이게
-            nextArrow: $('.next'),
-            prevArrow: $('.prev'),
-        });
-        await signStatus();
-        if (isLogin) {
-            //    로그인 된 사용자는 내정보페이지에 접근할때 별다른 이벤트가 필요 없음-> 유저 이름과 이메일을 페이지에 띄어주어야 함. 찜 리스트 보여주어야 함.
-            let ID = await sign_getID();
-            let nickName = await sign_getNickname();
-            // console.log(ID)
-            console.log(nickName)
-            $("#userName").text(nickName);
-            $("#userEmail").text(ID);
-            await showScrap()
-        } else {
-            window.alert("로그인이 필요한 기능입니다.")
-            window.location.replace("/")
-        }
-
-    });
-
-    async function signStatus() {
-        isLogin = await sign_checkSign();
-        if (isLogin) signin_mode();
-        else signout_mode();
-    }
-
-    function signin_mode() {
-        isLogin = true;
-    }
-
-    function signout_mode() {
-        isLogin = false;
-        sign_signout();
-    }
-
-    async function signinout() {
-        if (isLogin) {
-            signout_mode();
-        } else {
-            let id = $('#signin_id').val();
-            let pass = $('#signin_pass').val();
-
-            let result = await sign_signin(id, pass)
-            if (result) {
-                if (result['success']) {
-                    alert(result['success']);
-                    window.location.replace('/');
-                } else if (result['fail']) alert(result['fail'])
-            } else alert('서버연결실패')
-        }
-    }
-
-
-    async function showScrap() {
-        let access_token = await get_access_token();
-
-        $.ajax({
-            type: "GET",
-            url: "/tea/scrapList",
-            data: {},
-            headers: {"Authorization": "Bearer " + access_token},
-            success: function (response) {
-                if (response['scrapTeas']) {
-                    let scrapTea = response['scrapTeas']
-                    for (let i = 0; i < scrapTea.length; i++) {
-                        let name = scrapTea[i]['name']
-                        let img = scrapTea[i]['img']
-                        let temp_html = `<div class="post">
-                                              <img style="display: inline-block;"
-                                                   src="${img}"
-                                                   class="slider-image">
-                                              <p>${name}</p>
-                                          </div>`
-                        $('.post-wrapper').append(temp_html)
-                    }
-                }
-            }
-
-        })
-
-    }
-
-</script>
-
-
 </html>
