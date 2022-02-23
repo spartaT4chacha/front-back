@@ -41,15 +41,20 @@
                 $('#umm').append(html)
             }
             receiveTea = JSON.parse(localStorage.getItem("findlist"));
-            checkList = JSON.parse(localStorage.getItem("check_list"));
-            for (let i = 0; i < checkList.length; i++) {
-                let name = checkList[i];
-                let temp = `<div class="mytaste_tag" color="#0F3331" border = "1px solid #0F3331" width = "100px" height ="36px" border-radius= "10px" font-size="18px" text-align="center" line-height="34px" margin="0px 5px 10px">#${name}</div>`
-                $('.mytaste_hashtag').append(temp);
-            }
             let cnt = receiveTea.length;
-            let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
-            $('.mytaste_count').append(tmp);
+            checkList = JSON.parse(localStorage.getItem("check_list"));
+            if (checkList === null) {
+                let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
+                $('.mytaste_hashtag').append(tmp);
+            } else {
+                for (let i = 0; i < checkList.length; i++) {
+                    let name = checkList[i];
+                    let temp = `<div class="mytaste_tag" color="#0F3331" border = "1px solid #0F3331" width = "100px" height ="36px" border-radius= "10px" font-size="18px" text-align="center" line-height="34px" margin="0px 5px 10px">#${name}</div>`
+                    $('.mytaste_hashtag').append(temp);
+                }
+                let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
+                $('.mytaste_count').append(tmp);
+            }
             //추천 티 리스트 뿌려주는 함수 실행하기
             showTea(receiveTea)
             // 모달 js  $(function () {
@@ -416,7 +421,7 @@
                         // window.location.reload()
                     }
                 },
-                error: function (){
+                error: function () {
                     alert("로그인 해주세요~");
                     window.location.reload();
                 }

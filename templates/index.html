@@ -251,8 +251,8 @@
                 // $('#box').empty()
                 let Tea = JSON.parse(response['search_teas'])   /*서버에서 string으로 들어와서 JSON.parse 사용*/
                 // console.log(Tea)
-
                 localStorage.setItem("findlist", JSON.stringify(Tea));
+                localStorage.setItem("check_list", null);
                 /* localStorage.setItem("check_list", JSON.stringify(arr)); */
                 //-> 데이터를 페이지끼리 전송하는 방법 -> 1. 로컬 저장소를 이용한다.
                 //-> session storage -> server를 사용하는 방법.

@@ -226,12 +226,6 @@ def searchTea():
 
     return jsonify({'search_teas': find_list})
 
-
-@app.route('/tea')
-def teaList():
-    return render_template('get_tea.html')
-
-
 # ***************************************************************************************************
 
 # like+scrap -- 승신
