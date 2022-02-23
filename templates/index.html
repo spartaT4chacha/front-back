@@ -101,8 +101,8 @@
     }
 
 
-    //local storage로 데이터를 전송
-    async function get_search() {
+    //local storage로 데이터를 전송  (재영 : 이 부분 뭔지 몰라서 주석처리)
+    /* async function get_search() {
         // redirect -> tea_list
         // search 값을 같이 안겨서 보내야 한다.
         let search = $("#search").val();
@@ -116,10 +116,10 @@
         }).then(result => result.json());
 
         return response;
-    }
+    } */
 
 
-    //서버단 data/category에 정보 전송하기
+    //서버단 data/category에 정보 전송하기//////////////////////////////////////////////////////////////////////////////////
     async function get_ct_list() {
         let type = ['백차', '녹차', '홍차', '황차', '청차', '흑차', '대용차'];
         let effect = ['다이어트', '피로회복', '면역증진', '피부미용', '질병예방', '정신건강', '혈액순환', '소화기능'];
@@ -180,7 +180,7 @@
             }
         })
 
-    }
+    } //////////////////////////////////////////////////////////////////////////////////
 
     // 슬라이드 jquery
     jQuery(document).ready(function (e) {
@@ -220,6 +220,41 @@
             target2[e].style.color = "#EBE7DC";
 
         }
+    }
+
+
+    function search() {
+        let count = 0; // 검색된 차 개수를 담을 변수
+        let teaKeyword = $('#search').val(); // 입력한 검색어 담기
+        console.log(teaKeyword)
+
+        // ************** 수정 부분 **************
+        // 검색어 길이 제한
+        if (teaKeyword.length < 2) {
+            alert("검색어는 2글자 이상 입력해주세요!♥");
+            return false;
+        }
+        // 서버에 전송하기
+        $.ajax({
+            type: "POST",
+            url: "/tea/search",
+            headers: {'Content-Type': 'application/json'},
+            dataType: 'json',
+            data: JSON.stringify({
+                teaKeyword_give: teaKeyword,
+            }),
+            success: function (response) {
+                // $('#box').empty()
+                let Tea = JSON.parse(response['search_teas'])   /*서버에서 string으로 들어와서 JSON.parse 사용*/
+                // console.log(Tea)
+
+                localStorage.setItem("findlist", JSON.stringify(Tea));
+                /* localStorage.setItem("check_list", JSON.stringify(arr)); */
+                //-> 데이터를 페이지끼리 전송하는 방법 -> 1. 로컬 저장소를 이용한다.
+                //-> session storage -> server를 사용하는 방법.
+                location.href = "/tea_list";
+            }
+        })
     }
 
 
@@ -264,7 +299,7 @@
                         <input id="search" placeholder="#내_취향 #셀프추천" type="text"/>
                         <!-- <a href="./tea_list" onclick="get_search()"><span style="line-height: 46px; color:#0f3331"
                             class="material-icons">search</span></a> -->
-                        <button onclick="get_search()" style="line-height: 46px; color:#0f3331"
+                        <button onclick="search()" style="line-height: 46px; color:#0f3331"
                                 class="material-icons">search
                         </button>
                     </div>
