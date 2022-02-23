@@ -150,7 +150,7 @@
                         let scrapTea = response['scrapTeas']
                         let cnt = scrapTea.length;
                         let tmp = `<p style="font-size: 32px;font-weight: bold;color:#0F3331">해당하는 차는 ${cnt}개입니다.</p>`
-                        $('.mytaste_count').append(tmp);
+                        $('.mytaste_hashtag').append(tmp);
                         showTea(scrapTea);
                         $("img").click(function (element) {
                             $('.background').empty();
@@ -164,7 +164,6 @@
                             let img = scrapTea[src]['img']
                             let like = scrapTea[src]['like']
                             let eng_type = scrapTea[src]['eng_type']
-
                             let temp_html = `<div class="window">
                                     <div class="modal">
                                         <div class="modal_top">
@@ -234,14 +233,9 @@
                         let url_teaList = 'http://13.124.112.143/tea'
                         window.location.replace(url_teaList);
                     }
-
                 }
-
             })
-
         }
-
-
         // 좋아요 js
         $(function () {
             $(document).one('click', '.like-review', function (e) {
@@ -273,14 +267,12 @@
         <div class="mytaste">
             <div class="mytaste_title_underline">
                 <div class="mytaste_title">
-                    <p style="font-size:28px;color:#F2EFE8">♥내_취향 알아보기♥</p>
+                    <p style="font-size:28px;color:#F2EFE8">#내_취향 알아보기 ♥</p>
                 </div>
             </div>
             <div class="mytaste_hashtag">
-
             </div>
             <div class="mytaste_count">
-
             </div>
         </div>
     </div>
@@ -288,15 +280,15 @@
     <!-- 차 리스트 -->
     <div class="list_container">
 
-                <div class="chosen_tea_list">
-                </div>
-            </div>
-        </div>
-
-        <!-- 모달 페이지 -->
-        <div class="background">
+        <div class="chosen_tea_list">
         </div>
     </div>
+</div>
+
+<!-- 모달 페이지 -->
+<div class="background">
+</div>
+</div>
 </div>
 </body>
 
