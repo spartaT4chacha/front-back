@@ -223,64 +223,6 @@
     }
 
 
-    function search() {
-        let count = 0; // 검색된 차 개수를 담을 변수
-        let teaKeyword = $('#teaName').val(); // 입력한 검색어 담기
-
-        // ************** 수정 부분 **************
-        // 검색어 길이 제한
-        if (teaKeyword.length < 2) {
-            alert("검색어는 2글자 이상 입력해주세요!♥");
-            return false;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/tea/search",
-            headers: {'Content-Type': 'application/json'},
-            dataType: 'json',
-            data: JSON.stringify({
-                teaKeyword: teaKeyword, // 서버로 검색어 보내기
-            }),
-            success: function (response) {
-                $('#box').empty()
-                let Tea = JSON.parse(response['search_teas']) // 서버에서 검색한 결과 값 json형식으로 받아옴
-
-                for (let i = 0; i < Tea.length; i++) {
-
-                    let name = Tea[i]['name']
-                    let type = Tea[i]['type']
-                    let benefit = Tea[i]['benefit']
-                    let caffeineOX = Tea[i]['caffeineOX']
-                    let caffeine = Tea[i]['caffeine']
-                    let benefitdetail = Tea[i]['benefitdetail']
-                    let desc = Tea[i]['desc']
-                    let caution = Tea[i]['caution']
-                    let img = Tea[i]['img']
-                    let like = Tea[i]['like']
-
-                    let temp_html = `<p>name : ${name}</p>
-                                         <img class="img-size" src="${img}"/>
-                                         <p>${type}</p>
-                                         <p>${benefit}</p>
-                                         <p>${benefitdetail}</p>
-                                         <p>${desc}</p>
-                                         <p>${caffeineOX}</p>
-                                         <p>${caffeine}</p>
-                                         <p>${caution}</p>
-                                         <p><button onclick="likeTea('${name}')" class="btn btn-outline-secondary">좋아요</button> 좋아요 수 : ${like}</p>
-                                         <p> ---------------------------------------------------------------------------------------------- </p>
-                                         `
-                    $('#box').append(temp_html) // 차 정보 출력
-                    count++; // 실행될 때마다 검색된 차의 개수 1씩 증가 시키기
-                }
-                let count_html = `<p>${count}개 찾았습니다</p>` // 검색된 결과 개수 출력
-                $('#box').append(count_html)
-            }
-        })
-    }
-
-
 </script>
 <body>
 <div id="fullpage">
