@@ -65,9 +65,14 @@
         if (isLogin) {
             html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/" onclick="signinout()">로그아웃</a>`
             $('#umm').append(html)
+
         } else {
             html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/login" ">로그인</a>`
             $('#umm').append(html)
+            $('#toInfo').click(function (event) {
+                event.preventDefault();
+                alert('로그인해주세요');
+            })
         }
     });
 
@@ -280,8 +285,8 @@
             <ul class="navigation">
                 <li><a href="#" class="navi">차茶</a></li>
                 <li style="float:right">
-                    <a class="navi" href="./info"><span class="material-icons md-36"
-                                                        style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+                    <a class="navi" id="toInfo" href="./info"><span class="material-icons md-36"
+                                                                    style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
                 </li>
                 <li id="umm" style="float:right">
 
@@ -309,7 +314,7 @@
                     </div>
 
                     <div class="searchBar">
-                        <input id="search" placeholder="#내_취향 #셀프추천" type="text" onkeyup="enter()"::/>
+                        <input id="search" placeholder="#내_취향 #셀프추천" type="text" onkeyup="enter()" ::/>
                         <span href="#" onclick="search()" style="cursor: alias"><span
                                 style="line-height: 46px; color:#0f3331" class="material-icons">search</span></span>
                     </div>

@@ -239,6 +239,7 @@
                 }
             })
         }
+
         // 좋아요 js
         $(function () {
             $(document).one('click', '.like-review', function (e) {
@@ -259,8 +260,8 @@
         <ul class="navigation">
             <li><a href="./" class="navi">차茶</a></li>
             <li style="float:right">
-                <a class="navi" href="./info"><span class="material-icons md-36"
-                                                    style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+                <a class="navi" href="./info" id="toInfo"><span class="material-icons md-36"
+                                                                style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
             <li id='umm' style="float:right">
         </ul>
     </div>
@@ -270,28 +271,32 @@
         <div class="mytaste">
             <div class="mytaste_title_underline">
                 <div class="mytaste_title">
-                    <p style="font-size:28px;color:#F2EFE8">#내_취향 알아보기 ♥</p>
+                    <p style="font-size:28px;color:#F2EFE8">#내_취향 알아보기♥</p>
                 </div>
             </div>
             <div class="mytaste_hashtag">
+
             </div>
             <div class="mytaste_count">
+
             </div>
         </div>
     </div>
 
     <!-- 차 리스트 -->
     <div class="list_container">
+        <div class="chosen_tea_list_cover">
 
-        <div class="chosen_tea_list">
+            <div style="display:flex">
+                <div class="chosen_tea_list">
+                </div>
+            </div>
+        </div>
+
+        <!-- 모달 페이지 -->
+        <div class="background">
         </div>
     </div>
-</div>
-
-<!-- 모달 페이지 -->
-<div class="background">
-</div>
-</div>
 </div>
 </body>
 

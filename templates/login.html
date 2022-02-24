@@ -31,7 +31,7 @@
 
     <script>
         $(function () {
-            $("a").click(function () {
+            $("#signup").click(function () {
                 $(".modal").fadeIn();
                 $(".sign-up").prop("disabled", true);
 
@@ -50,6 +50,12 @@
                 login_Text = "로그아웃";
             } else {
                 login_Text = "로그인";
+                $('#toInfo').click(function (event) {
+                    event.preventDefault();
+                    $(".modal").fadeOut();
+                    alert('로그인해주세요');
+
+                })
             }
             $("#loginText").text(login_Text);
         });
@@ -206,8 +212,8 @@
     <ul class="navigation">
         <li><a href="./" class="navi">차茶</a></li>
         <li style="float:right">
-            <a class="navi" href="./info"><span class="material-icons md-36"
-                                                style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+            <a class="navi" href="./info" id="toInfo"><span class="material-icons md-36"
+                                                            style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
         <li style="float:right">
             <a class="navi nav_login" href="./login" id="loginText" onclick="signinout()"></a>
     </ul>
@@ -229,8 +235,8 @@
         <div class="haha">
             <button type="button" style="margin-top: 15px;" class="login-btn" onclick="signinout()">Login</button>
         </div>
-        <a class="reset-psw" href="#" style="margin-top: 20px">회원가입</a>
-                <div class="seperator" style="margin-top: 30px"></div>
+        <a class="reset-psw" href="#" id="signup" style="margin-top: 20px">회원가입</a>
+        <div class="seperator" style="margin-top: 30px"></div>
         <p class="login_inform" style="margin-top: 13px">Enjoy your tea time with ChaCha</p>
         <!-- Social login buttons -->
         <div class="social-icon">

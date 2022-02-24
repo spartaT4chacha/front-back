@@ -44,6 +44,10 @@
             } else {
                 html = `<a class="navi nav_login" iclassNameginText" style= "margin-right: 40px;" href= "/login" ">로그인</a>`
                 $('#umm').append(html)
+                $('#toInfo').click(function (event) {
+                    event.preventDefault();
+                    alert('로그인해주세요');
+                })
             }
             receiveTea = JSON.parse(localStorage.getItem("findlist"));
             let cnt = receiveTea.length;
@@ -454,8 +458,8 @@
         <ul class="navigation">
             <li><a href="./" class="navi">차茶</a></li>
             <li style="float:right">
-                <a class="navi" href="./info"><span class="material-icons md-36"
-                                                    style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
+                <a class="navi" href="./info" id="toInfo"><span class="material-icons md-36"
+                                                                style="font-size: 25px; line-height: inherit;">&#xE87C;</span></a>
             <li id='umm' style="float:right">
         </ul>
     </div>
