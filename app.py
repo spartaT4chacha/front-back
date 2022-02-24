@@ -66,6 +66,7 @@ def save_tea():
     desc_receive = tea_receive['desc_give']  # 상세2 상세설명
     caution_receive = tea_receive['caution_give']  # 상세3 주의사항
     img_receive = tea_receive['img_give']  # 상세4 이미지 주소
+    like_receive = tea_receive['like_give'] #좋아요 초기 0 집어넣기 위함
 
     doc = {
         'name': name_receive,
@@ -79,6 +80,7 @@ def save_tea():
         'desc': desc_receive,
         'caution': caution_receive,
         'img': img_receive,
+        'like': like_receive
     }
 
     db.tealist.insert_one(doc)
@@ -544,7 +546,7 @@ def sign_page():
 
 # ***************************************************************************************************
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5001, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)
 
 # 안 쓰는데 혹시나 해서 남겨둔 예전 like & scrap *********************************************************
 
